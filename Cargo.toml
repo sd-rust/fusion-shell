@@ -1,0 +1,6 @@
+[package]
+name = "fusion-shell"
+version = "0.1.0"
+authors = ["Sandeep Datta <datta.sandeep@gmail.com>"]
+
+[dependencies]
