@@ -3,22 +3,7 @@
 
 use arithmetic::expression;
 
-peg! arithmetic(r#"
-#[pub]
-expression -> i64
-    = sum
-sum -> i64
-    = l:product "+" r:product { l+r }
-    / product
-product -> i64
-    = l:atom "*" r:atom { l*r }
-    / atom
-atom -> i64
-    = number
-    / "(" v:sum ")" { v }
-number -> i64
-    = [0-9]+ { match_str.parse().unwrap() }
-"#);
+peg_file! arithmetic("fsh.peg");
 
 fn main() {
     assert_eq!(expression("1+1"), Ok(2));
