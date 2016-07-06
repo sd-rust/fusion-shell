@@ -1,0 +1,3 @@
+- Handle Ctrl+D
+- Remove all unnecessary unwrap() calls.
+- Handle "exit" as a command.
