@@ -34,13 +34,13 @@ str_chars -> String
         match_str.to_string()
     }
 
+command -> Expression
+    = id:identifier args:command_args?  { Expression::CommandApp(id.to_string(), args) }
+
 command_args -> Vec<Expression>
     = WS+ e:expression* { 
         e 
     }
-
-command -> Expression
-    = id:identifier args:command_args?  { Expression::CommandApp(id.to_string(), args) }
 
 identifier -> String
     = [_a-zA-Z][_a-zA-Z0-9]*     { match_str.to_string() }
