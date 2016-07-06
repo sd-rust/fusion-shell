@@ -1,0 +1,1 @@
+A modern object pipeline based crossplatform shell.

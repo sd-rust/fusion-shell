@@ -1,3 +1,5 @@
+Copyright (C) 2016  Sandeep Datta
+
 - Accept bare strings as arguments
 - Accept escape chars
 - Handle Ctrl+D

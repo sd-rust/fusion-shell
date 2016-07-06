@@ -1,3 +1,5 @@
+//Copyright (C) 2016  Sandeep Datta
+
 #![feature(plugin)]
 #![feature(slice_patterns)]
 
