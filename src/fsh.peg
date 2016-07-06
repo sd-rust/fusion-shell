@@ -35,8 +35,11 @@ str_chars -> String
     }
 
 command -> Expression
-    = id:identifier args:command_args? { 
-        Expression::CommandApp(id.to_string(), args) 
+    = id:identifier maybe_args:command_args? {
+        match maybe_args {
+            Some(args) => Expression::CommandApp(id.to_string(), args),
+            None => Expression::CommandApp(id.to_string(), vec![])
+        }
     }
 
 command_args -> Vec<Expression>

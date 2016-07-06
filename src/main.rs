@@ -13,7 +13,7 @@ use fsh_parser::program;
 pub enum Expression {
     Int(i64),
     Str(String),
-    CommandApp(String, Option<Vec<Expression>>) //Name, Args
+    CommandApp(String, Vec<Expression>) //Name, Args
 }
 
 peg_file! fsh_parser("fsh.peg");
@@ -28,17 +28,11 @@ static BANNER:&'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
-fn exit(maybe_args: Option<Vec<Expression>>) {
-    match maybe_args {
-        Some(args) => {
-            match &args[..] {
-                &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
-                _ => println!("Ignoring malformed exit command.")
-            }
-        },
-        None => {
-            process::exit(0);
-        }
+fn exit(args: Vec<Expression>) {
+    match &args[..] {
+        &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
+        &[] => process::exit(0),
+        _ => println!("Ignoring malformed exit command.")
     }
 }
 
@@ -47,9 +41,9 @@ fn run_prog(prog: Vec<Expression>) {
         match expr {
             Expression::Int(i) => println!("{}", i),
             Expression::Str(s) => println!("{}", s),
-            Expression::CommandApp(name, maybe_args) => {
+            Expression::CommandApp(name, args) => {
                 match name.as_str() {
-                    "exit" => exit(maybe_args),
+                    "exit" => exit(args),
                     _ => println!("Ignoring unknown command: {}", name)
                 }
             }
