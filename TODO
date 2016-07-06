@@ -1,3 +1,5 @@
+- Accept bare strings as arguments
+- Accept escape chars
 - Handle Ctrl+D
 - Remove all unnecessary unwrap() calls.
 - Handle "exit" as a command.

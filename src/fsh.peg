@@ -43,7 +43,7 @@ command -> Expression
     }
 
 command_args -> Vec<Expression>
-    = WS+ e:(integer / string)* { 
+    = WS+ e:(integer / string / path)* { 
         e 
     }
 
@@ -51,6 +51,13 @@ identifier -> String
     = [_a-zA-Z][_a-zA-Z0-9]* { 
         match_str.to_string()
     }
+
+path -> Expression
+    = path_char+ {
+        Expression::Str(match_str.to_string())
+    }
+
+path_char = !(WS/EOL) .
 
 WS = [ \t]
 EOL = [\n]

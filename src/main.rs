@@ -46,9 +46,7 @@ fn cd(args: Vec<Expression>) {
     match &args[..] {
         &[Expression::Str(ref s)] => {
             let root = Path::new(s);
-            if env::set_current_dir(&root).is_ok() {
-                println!("Successfully changed working directory to {}!", root.display());
-            } else {
+            if !env::set_current_dir(&root).is_ok() {
                 println!("Error: could not set current directory.");
             }
         },
@@ -101,10 +99,18 @@ fn run_prog(prog: Vec<Expression>) {
     }
 }
 
-fn do_repl() {
-    let prompt = "fsh > ";
-    print!("{}", prompt);
+fn prompt() -> String {
+    let p = env::current_dir().unwrap();
+    format!("fsh {}> ", p.display())
+}
+
+fn show_prompt() {
+    print!("{}", prompt());
     io::stdout().flush().unwrap();
+}
+
+fn do_repl() {
+    show_prompt();
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
     let mut buff = String::new();
@@ -120,8 +126,7 @@ fn do_repl() {
                 Err(err) => println!("Error: {:?}", err),
             }
             
-            print!("{}", prompt);
-            io::stdout().flush().unwrap();
+            show_prompt();
         }
         buff.clear();
     }
