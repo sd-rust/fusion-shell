@@ -1,8 +1,12 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Accept bare strings as arguments
 - Accept escape chars
 - Handle Ctrl+D
 - Remove all unnecessary unwrap() calls.
-- Handle "exit" as a command.
 - Print error messages to stderr
+
+======
+ Done
+======
+- Accept bare strings as arguments
+- Handle "exit" as a command.
