@@ -28,22 +28,28 @@ static BANNER:&'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
+fn exit(maybe_args: Option<Vec<Expression>>) {
+    match maybe_args {
+        Some(args) => {
+            match &args[..] {
+                &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
+                _ => println!("Ignoring malformed exit command.")
+            }
+        },
+        None => {
+            process::exit(0);
+        }
+    }
+}
+
 fn run_prog(prog: Vec<Expression>) {
     for expr in prog {
         match expr {
             Expression::Int(i) => println!("{}", i),
             Expression::Str(s) => println!("{}", s),
             Expression::CommandApp(name, maybe_args) => {
-                match (name.as_str(), maybe_args) {
-                    ("exit", Some(args)) => {
-                        match &args[..] {
-                            &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
-                            _ => println!("Ignoring malformed exit command.")
-                        }
-                    },
-                    ("exit", None) => {
-                        process::exit(0);
-                    },
+                match name.as_str() {
+                    "exit" => exit(maybe_args),
                     _ => println!("Ignoring unknown command: {}", name)
                 }
             }
