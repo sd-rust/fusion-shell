@@ -1,15 +1,18 @@
 #![feature(plugin)]
+#![feature(slice_patterns)]
+
 #![plugin(peg_syntax_ext)]
+
 
 use std::io;
 use std::io::prelude::*;
+use std::process;
 use fsh_parser::program;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
     Int(i64),
     Str(String),
-    Flag(String),
     CommandApp(String, Option<Vec<Expression>>) //Name, Args
 }
 
@@ -25,6 +28,29 @@ static BANNER:&'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
+fn run_prog(prog: Vec<Expression>) {
+    for expr in prog {
+        match expr {
+            Expression::Int(i) => println!("{}", i),
+            Expression::Str(s) => println!("{}", s),
+            Expression::CommandApp(name, maybe_args) => {
+                match (name.as_str(), maybe_args) {
+                    ("exit", Some(args)) => {
+                        match &args[..] {
+                            &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
+                            _ => println!("Ignoring malformed exit command.")
+                        }
+                    },
+                    ("exit", None) => {
+                        process::exit(0);
+                    },
+                    _ => println!("Ignoring unknown command: {}", name)
+                }
+            }
+        }
+    }
+}
+
 fn do_repl() {
     let prompt = "fsh > ";
     print!("{}", prompt);
@@ -37,11 +63,13 @@ fn do_repl() {
         {
             let line = buff.trim_right_matches("\n");
 
-            if line == "exit" {
-                break;
+            //println!("{:?}", program(&line));
+            let maybe_prog = program(&line);
+            match maybe_prog {
+                Ok(prog) => run_prog(prog),
+                Err(err) => println!("Error: {:?}", err),
             }
-
-            println!("{:?}", program(&line));
+            
             print!("{}", prompt);
             io::stdout().flush().unwrap();
         }

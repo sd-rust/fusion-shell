@@ -35,10 +35,12 @@ str_chars -> String
     }
 
 command -> Expression
-    = id:identifier args:command_args?  { Expression::CommandApp(id.to_string(), args) }
+    = id:identifier args:command_args? { 
+        Expression::CommandApp(id.to_string(), args) 
+    }
 
 command_args -> Vec<Expression>
-    = WS+ e:expression* { 
+    = WS+ e:(integer / string)* { 
         e 
     }
 
