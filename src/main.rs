@@ -10,7 +10,7 @@ pub enum Expression {
     Int(i64),
     Str(String),
     Flag(String),
-    Command(String, Option<Vec<Expression>>) //Name, Args
+    CommandApp(String, Option<Vec<Expression>>) //Name, Args
 }
 
 peg_file! fsh_parser("fsh.peg");
