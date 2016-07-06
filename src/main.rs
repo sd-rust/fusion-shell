@@ -3,9 +3,17 @@
 
 use std::io;
 use std::io::prelude::*;
-use arithmetic::expression;
+use fsh_parser::program;
 
-peg_file! arithmetic("fsh.peg");
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub enum Expression {
+    Int(i64),
+    Str(String),
+    Flag(String),
+    Command(String, Option<Vec<Expression>>) //Name, Args
+}
+
+peg_file! fsh_parser("fsh.peg");
 
 //Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
 static BANNER:&'static str = r#"
@@ -18,7 +26,7 @@ static BANNER:&'static str = r#"
 "#;
 
 fn do_repl() {
-    let prompt = "expression > ";
+    let prompt = "fsh > ";
     print!("{}", prompt);
     io::stdout().flush().unwrap();
     let stdin = io::stdin();
@@ -33,7 +41,7 @@ fn do_repl() {
                 break;
             }
 
-            println!("{:?}", expression(&line));
+            println!("{:?}", program(&line));
             print!("{}", prompt);
             io::stdout().flush().unwrap();
         }

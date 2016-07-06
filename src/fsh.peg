@@ -1,14 +1,50 @@
+use super::Expression;
+
 #[pub]
-expression -> i64
-    = sum
-sum -> i64
-    = l:product "+" r:product { l+r }
-    / product
-product -> i64
-    = l:atom "*" r:atom { l*r }
-    / atom
-atom -> i64
-    = number
-    / "(" v:sum ")" { v }
-number -> i64
-    = [0-9]+ { match_str.parse().unwrap() }
+program -> Vec<Expression>
+    = e1:(e0:expression EOL {e0})* e2:expression? EOF {
+        let mut exprs = vec![];
+        exprs.extend(e1);
+        if let Some(e) = e2 {
+            exprs.push(e);
+        }
+        exprs
+    }
+
+expression -> Expression
+    = integer / string / command
+
+integer -> Expression
+    = WS* d:digits WS* { 
+        Expression::Int(d.parse().unwrap()) 
+    }
+
+digits -> String
+    = [0-9]+ { 
+        match_str.to_string() 
+    }
+
+string -> Expression
+    = WS* "\"" xs:str_chars "\"" WS*  { 
+        Expression::Str(xs)
+    }
+
+str_chars -> String
+    = (!"\"" .)* {
+        match_str.to_string()
+    }
+
+command_args -> Vec<Expression>
+    = WS+ e:expression* { 
+        e 
+    }
+
+command -> Expression
+    = id:identifier args:command_args?  { Expression::Command(id.to_string(), args) }
+
+identifier -> String
+    = [_a-zA-Z][_a-zA-Z0-9]*     { match_str.to_string() }
+
+WS = [ \t]
+EOL = [\n]
+EOF = !.
