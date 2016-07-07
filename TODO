@@ -2,11 +2,29 @@ Copyright (C) 2016  Sandeep Datta
 
 - Accept escape chars
 - Handle Ctrl+D
-- Remove all unnecessary unwrap() calls.
-- Print error messages to stderr
+
+
+- Print banner only when running in interactive mode.
+
+==========
+ Commands
+==========
+- show expr - dump variables and expressions to help in debug scripts
+- grep
+- find
+- ls
+- echo
+
+===========
+ Variables
+===========
+- INIT_DIR - directory from where the shell was started
+- SCRIPT_PATH, SCRIPT_DIR, SCRIPT_NAME
 
 ======
  Done
 ======
 - Accept bare strings as arguments
 - Handle "exit" as a command.
+- Print error messages to stderr
+- Remove all unnecessary unwrap() calls.

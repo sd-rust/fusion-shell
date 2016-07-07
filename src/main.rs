@@ -13,6 +13,16 @@ use std::env;
 use std::path::Path;
 use fsh_parser::program;
 
+macro_rules! print_err_ln {
+    ($($arg:tt)*) => ({
+        use std::io::Write;
+        match writeln!(&mut ::std::io::stderr(), $($arg)* ) {
+            Ok(_) => {},
+            Err(x) => panic!("Unable to write to stderr (file handle closed?): {}", x),
+        }
+    })
+}
+
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
     Int(i64),
@@ -34,13 +44,19 @@ static BANNER:&'static str = r#"
 
 //MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
 
+fn print_curdir() {
+    match env::current_dir() {
+        Ok(p) => println!("{}", p.display()),
+        Err(err) => {
+            print_err_ln!("Error: Could not query current directory. {}.", err);
+        }
+    }
+}
+
 fn pwd(args: Vec<Expression>) {
     match &args[..] {
-        &[] => {
-            let p = env::current_dir().unwrap();
-            println!("{}", p.display());
-        },
-        _ => println!("Ignoring malformed command.")
+        &[] => print_curdir(),
+        _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
 
@@ -48,39 +64,20 @@ fn cd(args: Vec<Expression>) {
     match &args[..] {
         &[Expression::Str(ref s)] => {
             let root = Path::new(s);
-            if !env::set_current_dir(&root).is_ok() {
-                println!("Error: could not set current directory.");
+            if let Err(err) = env::set_current_dir(&root) {
+                print_err_ln!("Error: Could not set current directory. {}.", err);
             }
         },
-        &[] => {
-            let p = env::current_dir().unwrap();
-            println!("{}", p.display());
-        },
-        _ => println!("Ignoring malformed command.")
+        &[] => print_curdir(),
+        _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
-
-// fn grep(_args: Vec<Expression>) {
-//     println!("Not yet implemented!");
-// }
-
-// fn find(_args: Vec<Expression>) {
-//     println!("Not yet implemented!");
-// }
-
-// fn ls(_args: Vec<Expression>) {
-//     println!("Not yet implemented!");
-// }
-
-// fn echo(_args: Vec<Expression>) {
-//     println!("Not yet implemented!");
-// }
 
 fn exit(args: Vec<Expression>) {
     match &args[..] {
         &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
         &[] => process::exit(0),
-        _ => println!("Ignoring malformed command.")
+        _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
 
@@ -94,7 +91,7 @@ fn run_prog(prog: Vec<Expression>) {
                     "pwd"   => pwd(args),
                     "cd"    => cd(args),
                     "exit"  => exit(args),
-                    _ => println!("Ignoring unknown command: {}", name)
+                    _ => print_err_ln!("Warning: Ignoring unknown command: {}", name)
                 }
             }
         }
@@ -102,13 +99,20 @@ fn run_prog(prog: Vec<Expression>) {
 }
 
 fn prompt() -> String {
-    let p = env::current_dir().unwrap();
-    format!("fsh {}> ", p.display())
+    match env::current_dir() {
+        Ok(p) => format!("fsh {}> ", p.display()),
+        Err(err) => {
+            print_err_ln!("Error: Could not query current directory. {}.", err);
+            "fsh > ".to_string()
+        }
+    }
 }
 
 fn show_prompt() {
     print!("{}", prompt());
-    io::stdout().flush().unwrap();
+    io::stdout()
+        .flush()
+        .unwrap_or_else(|err| print_err_ln!("Warning: could not flush output stream. {}.", err));
 }
 
 fn do_repl() {
@@ -117,7 +121,10 @@ fn do_repl() {
     let mut stdin = stdin.lock();
     let mut buff = String::new();
     loop {
-        let _ = stdin.read_line(&mut buff).unwrap();
+        if let Err(err) = stdin.read_line(&mut buff) {
+            println!("Error: Could not read line from input stream. {}.", err);
+            break;
+        }
         {
             let line = buff.trim_right_matches("\n");
 
@@ -125,7 +132,7 @@ fn do_repl() {
             let maybe_prog = program(&line);
             match maybe_prog {
                 Ok(prog) => run_prog(prog),
-                Err(err) => println!("Error: {:?}", err),
+                Err(err) => print_err_ln!("Error: {}", err),
             }
             
             show_prompt();
@@ -135,6 +142,6 @@ fn do_repl() {
 }
 
 fn main() {
-    println!("{}", BANNER);
+    print_err_ln!("{}", BANNER);
     do_repl();
 }
