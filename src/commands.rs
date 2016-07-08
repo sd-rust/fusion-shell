@@ -1,11 +1,10 @@
-//Copyright (C) 2016  Sandeep Datta
+// Copyright (C) 2016  Sandeep Datta
 
 use asg::*;
 use utils;
 use std::env;
 use std::path::Path;
 use std::process;
-//use utils::*;
 
 pub fn pwd(args: Vec<Expression>) {
     match args[..] {
@@ -34,4 +33,3 @@ pub fn exit(args: Vec<Expression>) {
         _ => print_err_ln!("Warning: Ignoring malformed command."),
     }
 }
-
