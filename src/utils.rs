@@ -1,3 +1,5 @@
+//Copyright (C) 2016  Sandeep Datta
+
 macro_rules! print_err_ln {
     ($($arg:tt)*) => ({
         use std::io::Write;

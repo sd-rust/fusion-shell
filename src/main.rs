@@ -15,13 +15,9 @@ use fsh_parser::program;
 
 #[macro_use]
 mod utils;
+mod asg;
 
-#[derive(Clone, PartialEq, Eq, Debug)]
-pub enum Expression {
-    Int(i64),
-    Str(String),
-    CommandApp(String, Vec<Expression>), // Name, Args
-}
+use asg::*;
 
 peg_file! fsh_parser("fsh.peg");
 
