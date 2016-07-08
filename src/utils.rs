@@ -28,15 +28,6 @@ pub fn show_banner() {
     print_err_ln!("{}", BANNER);
 }
 
-pub fn print_curdir() {
-    match env::current_dir() {
-        Ok(p) => println!("{}", p.display()),
-        Err(err) => {
-            print_err_ln!("Error: Could not query current directory. {}.", err);
-        }
-    }
-}
-
 pub fn show_prompt() {
     print!("{}", prompt());
     io::stdout()

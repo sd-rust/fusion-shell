@@ -14,6 +14,12 @@ fn print_path(val: commands::Result<PathBuf>) {
     }
 }
 
+fn print_void(val: commands::Result<()>) {
+    if let Err(err) = val {
+        print_err_ln!("Error: {:?}", err);
+    }
+}
+
 fn run_expr(expr: Expression) {
     match expr {
         Expression::Int(i) => println!("{}", i),
@@ -21,7 +27,7 @@ fn run_expr(expr: Expression) {
         Expression::CommandApp(name, args) => {
             match name.as_str() {
                 "pwd" => print_path(commands::pwd(args)),
-                "cd" => commands::cd(args),
+                "cd" => print_void(commands::cd(args)),
                 "exit" => commands::exit(args),
                 _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
             }

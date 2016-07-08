@@ -1,7 +1,6 @@
 // Copyright (C) 2016  Sandeep Datta
 
 use asg::*;
-use utils;
 use std::env;
 use std::path::Path;
 use std::path::PathBuf;
@@ -30,16 +29,13 @@ pub fn pwd(args: Vec<Expression>) -> Result<PathBuf> {
     }
 }
 
-pub fn cd(args: Vec<Expression>) {
+pub fn cd(args: Vec<Expression>) -> Result<()> {
     match args[..] {
         [Expression::Str(ref s)] => {
             let root = Path::new(s);
-            if let Err(err) = env::set_current_dir(&root) {
-                print_err_ln!("Error: Could not set current directory. {}.", err);
-            }
+            env::set_current_dir(&root).map_err(|err| From::from(err))
         }
-        [] => utils::print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
+        _ => Err(PipeError::MalformedCommand),
     }
 }
 
