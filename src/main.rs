@@ -1,4 +1,4 @@
-//Copyright (C) 2016  Sandeep Datta
+// Copyright (C) 2016  Sandeep Datta
 
 #![feature(plugin)]
 #![feature(slice_patterns)]
@@ -27,13 +27,13 @@ macro_rules! print_err_ln {
 pub enum Expression {
     Int(i64),
     Str(String),
-    CommandApp(String, Vec<Expression>) //Name, Args
+    CommandApp(String, Vec<Expression>), // Name, Args
 }
 
 peg_file! fsh_parser("fsh.peg");
 
-//Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
-static BANNER:&'static str = r#"
+// Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
+static BANNER: &'static str = r#"
  ______         _                _____ _          _ _ 
 |  ____|       (_)              / ____| |        | | |
 | |__ _   _ ___ _  ___  _ __   | (___ | |__   ___| | |
@@ -42,7 +42,7 @@ static BANNER:&'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
-//MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
+// MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
 
 fn print_curdir() {
     match env::current_dir() {
@@ -56,7 +56,7 @@ fn print_curdir() {
 fn pwd(args: Vec<Expression>) {
     match args[..] {
         [] => print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command.")
+        _ => print_err_ln!("Warning: Ignoring malformed command."),
     }
 }
 
@@ -67,9 +67,9 @@ fn cd(args: Vec<Expression>) {
             if let Err(err) = env::set_current_dir(&root) {
                 print_err_ln!("Error: Could not set current directory. {}.", err);
             }
-        },
+        }
         [] => print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command.")
+        _ => print_err_ln!("Warning: Ignoring malformed command."),
     }
 }
 
@@ -77,7 +77,7 @@ fn exit(args: Vec<Expression>) {
     match args[..] {
         [Expression::Int(exit_code)] => process::exit(exit_code as i32),
         [] => process::exit(0),
-        _ => print_err_ln!("Warning: Ignoring malformed command.")
+        _ => print_err_ln!("Warning: Ignoring malformed command."),
     }
 }
 
@@ -88,10 +88,10 @@ fn run_prog(prog: Vec<Expression>) {
             Expression::Str(s) => println!("{}", s),
             Expression::CommandApp(name, args) => {
                 match name.as_str() {
-                    "pwd"   => pwd(args),
-                    "cd"    => cd(args),
-                    "exit"  => exit(args),
-                    _ => print_err_ln!("Warning: Ignoring unknown command: {}", name)
+                    "pwd" => pwd(args),
+                    "cd" => cd(args),
+                    "exit" => exit(args),
+                    _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
                 }
             }
         }
@@ -128,13 +128,13 @@ fn do_repl() {
         {
             let line = buff.trim_right_matches('\n');
 
-            //println!("{:?}", program(&line));
+            // println!("{:?}", program(&line));
             let maybe_prog = program(line);
             match maybe_prog {
                 Ok(prog) => run_prog(prog),
                 Err(err) => print_err_ln!("Error: {}", err),
             }
-            
+
             show_prompt();
         }
         buff.clear();
