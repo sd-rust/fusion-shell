@@ -1,42 +1,42 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use commands;
-use asg::Expression;
+use commands::{self, PipeValue, PipeError};
+use asg::{Expression, CommandApplication};
 
 //For output formatting
-use std::path::PathBuf;
-
-fn print_path(val: commands::Result<PathBuf>) {
+fn print(val: commands::Result<PipeValue>) {
     match val {
-        Ok(p) => println!("{}", p.display()),
-        //TODO: Use the Display trait to print err
+        Ok(pv) => {
+            match pv {
+                PipeValue::None => (),
+                PipeValue::Int(val) => print!("{}", val),
+                PipeValue::Str(val) => print!("{}", val),
+                PipeValue::Path(val) => print!("{}", val.display()),
+            }
+        }
         Err(err) => print_err_ln!("Error: {}", err),
     }
 }
 
-fn print_void(val: commands::Result<()>) {
-    if let Err(err) = val {
-        print_err_ln!("Error: {}", err);
-    }
-}
-
-fn run_expr(expr: Expression) {
+fn run_expr(expr: Expression) -> commands::Result<PipeValue>{
     match expr {
-        Expression::Int(i) => println!("{}", i),
-        Expression::Str(s) => println!("{}", s),
-        Expression::CommandApp(name, args) => {
+        Expression::Int(val) => Ok(PipeValue::Int(val)),
+        Expression::Str(val) => Ok(PipeValue::Str(val)),
+        Expression::Command(CommandApplication {name, args}) => {
             match name.as_str() {
-                "pwd" => print_path(commands::pwd(args)),
-                "cd" => print_void(commands::cd(args)),
+                "pwd" => commands::pwd(args),
+                "cd" => commands::cd(args),
                 "exit" => commands::exit(args),
-                _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
+                _ => Err(PipeError::BadCommand),
             }
         }
+        Expression::Map(_, _) => unimplemented!(),
     }
 }
 
 pub fn run_prog(prog: Vec<Expression>) {
     for expr in prog {
-        run_expr(expr)
+        print(run_expr(expr));
+        println!("");
     }
 }

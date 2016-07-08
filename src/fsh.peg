@@ -1,6 +1,6 @@
 //Copyright (C) 2016  Sandeep Datta
 
-use asg::Expression;
+use asg::{Expression, CommandApplication};
 
 #[pub]
 program -> Vec<Expression>
@@ -39,8 +39,8 @@ str_chars -> String
 command -> Expression
     = id:identifier maybe_args:command_args? {
         match maybe_args {
-            Some(args) => Expression::CommandApp(id.to_string(), args),
-            None => Expression::CommandApp(id.to_string(), vec![])
+            Some(args) => Expression::Command(CommandApplication {name: id.to_string(), args: args}),
+            None => Expression::Command(CommandApplication {name: id.to_string(), args: vec![]})
         }
     }
 

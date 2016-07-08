@@ -10,9 +10,18 @@ use std::result;
 use std::fmt;
 
 #[derive(Debug)]
+pub enum PipeValue {
+    None,
+    Int(i64),
+    Str(String),
+    Path(PathBuf),
+}
+
+#[derive(Debug)]
 pub enum PipeError {
     Io(io::Error),
     MalformedCommand,
+    BadCommand,
 }
 
 impl fmt::Display for PipeError {
@@ -20,6 +29,7 @@ impl fmt::Display for PipeError {
         match *self {
             PipeError::Io(ref err) => write!(f, "{}", err),
             PipeError::MalformedCommand => write!(f, "Malformed command"),
+            PipeError::BadCommand => write!(f, "Bad command"),
         }
     }
 }
@@ -32,27 +42,45 @@ impl From<io::Error> for PipeError {
     }
 }
 
-pub fn pwd(args: Vec<Expression>) -> Result<PathBuf> {
-    match args[..] {
-        [] => env::current_dir().map_err(|err| From::from(err)),
-        _ => Err(PipeError::MalformedCommand),
+impl From<PathBuf> for PipeValue {
+    fn from(path_buff: PathBuf) -> PipeValue {
+        PipeValue::Path(path_buff)
     }
 }
 
-pub fn cd(args: Vec<Expression>) -> Result<()> {
+impl From<()> for PipeValue {
+    fn from(_: ()) -> PipeValue {
+        PipeValue::None
+    }
+}
+
+pub fn pwd(args: Vec<Expression>) -> Result<PipeValue> {
     match args[..] {
-        [Expression::Str(ref s)] => {
-            let root = Path::new(s);
-            env::set_current_dir(&root).map_err(|err| From::from(err))
+        [] => {
+            env::current_dir()
+                .map(From::from)
+                .map_err(From::from)
         }
         _ => Err(PipeError::MalformedCommand),
     }
 }
 
-pub fn exit(args: Vec<Expression>) {
+pub fn cd(args: Vec<Expression>) -> Result<PipeValue> {
+    match args[..] {
+        [Expression::Str(ref s)] => {
+            let root = Path::new(s);
+            env::set_current_dir(&root)
+                .map(From::from)
+                .map_err(From::from)
+        }
+        _ => Err(PipeError::MalformedCommand),
+    }
+}
+
+pub fn exit(args: Vec<Expression>) -> Result<PipeValue> {
     match args[..] {
         [Expression::Int(exit_code)] => process::exit(exit_code as i32),
         [] => process::exit(0),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
+        _ => Err(PipeError::MalformedCommand),
     }
 }

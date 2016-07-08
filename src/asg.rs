@@ -3,8 +3,16 @@
 // Abstract Semantic Graph
 
 #[derive(Clone, PartialEq, Eq, Debug)]
+pub struct CommandApplication {
+    pub name: String,
+    pub args: Vec<Expression>,
+}
+
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
     Int(i64),
     Str(String),
-    CommandApp(String, Vec<Expression>), // Name, Args
+    //TODO: Rename to Command
+    Command(CommandApplication),
+    Map(CommandApplication, CommandApplication),
 }
