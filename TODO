@@ -1,8 +1,136 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Accept escape chars
+- Variables
+    - Setting: 
+        - Immutable: 
+            - Local to current shell: x = 10;
+            - Exported (to other shell processes): pub x = 10;
+            - Exported to other non shell processes: export x;
+        - Mutable: var y = "abc";
+        - export keyword for exporting predefined variables
+    - Getting: echo $x $y
+    - Deleting: del x, y;
+    - Scoping rules
+    - Persistence / Serialization?
+    - value types / reference types: Everything is a value type in shells?
+        - Let numbers be value types and strings be immutable (use COW (Copy on write) when someone tries to modify them)
+    - Type inference
+
+- Data structures
+    - Lists: 
+        let a = [a b c]
+        a.len
+        subscripting: a[0]
+        slicing: a[1:]
+        - List comprehensions
+    - Dictionaries
+        - Dictionary comprehensions
+    - Tuples
+        - Indexable
+        - Comparable
+    - Enums (like in Rust)
+    - Path
+        - AbsPath
+            path1.extention
+            path1.basename
+            path1.dirname
+        - RelPath
+        - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
+    - Option
+    - Result
+
+- Constants
+    let PI = 3.141592654
+    let GREETING = hello
+
+- Strings
+    - Intrapolation: 
+        - "Name: $name"
+        - "width: ${width}px"
+        - Quotation: "", '', """ """, r"", r'', r""" """
+    - Accept escape chars (even in bare strings): \e, \r, \n, \t, \x, \U etc
+    - Bare strings
+
+- Functions
+    say_hello name = echo $name
+    - Nested functions / closures
+    - Partial functions
+
+- Operators
+    - Overloaded
+        - For example: + works for both addition and concatenation. Causes syntax error when the operands are not compatible.
+
+- Control flow
+    - if/else: Conditionals if / else / elif.
+        - Allow checking exit status like fish shell
+    - loops
+    - No switch, use pattern matching
+
+- Error handling
+    - Option
+    - Result
+    - Mandatory exit code checking
+
+- Pattern matching
+    - List patterns
+    - Dictionary patterns
+    - slice patterns
+    - Binary patterns (using list/string patterns?)
+        - Must support endian agnostic matching if required
+    - regex patterns
+    - literal matches
+    - Guards
+
+- Structs?
+
+- Namespaces?
+
+- Modules 
+    import abc
+
+
+- Piping (inspired by ammonite shell)
+    - collection |  f -> collection.map(f)
+    - collection || f -> collection.flatmap(f)
+    - collection |? f -> collection.filter(f) #filter = select
+    - collection |& f -> collection.reduce(f) #reduce = fold
+    - collection |! f -> collection.foreach(f)
+    - collection |> f -> f(collection)
+
+- Wildcards: *,**,?,{}
+
+- Lambdas: 
+    x y => x == y
+    () => $a
+    x => len x
+- Regular expression:r/abc/ig, =~
+
+- Dictionaries / Objects: d = {x:1 y:2}; d = (dict [a b c d])
+
+- Numeric literals: 
+    - Support hex, octal, binary literals
+    - Allow underscore separators for readability
+
+- Redirection
+    - >, >>
+    - <, <<
+    - 2>
+    - 2>&1
+    - serializes to/from yaml/xml?
+    - NOTE: Redirection and piping should work for both external and internal commands. The user should be able to pipe output from external commands to internal commands and vice-versa.
+
+- Add support for external commands: `ls, `ag etc
+
+
+
 - Handle Ctrl+D
 
+- libfusion / libfsh
+    - Can be used by regular apps to interact with fusion shell
+        - Apps can use data types defined by the shell
+        - Introduce new data types to the shell
+        - Participate in the object pipeline / redirection mechanism
+    - Available as a Rust crate and as a C library!
 
 - Print banner only when running in interactive mode.
 
@@ -14,6 +142,7 @@ Copyright (C) 2016  Sandeep Datta
 - find
 - ls
 - echo
+- env
 
 ===========
  Variables
