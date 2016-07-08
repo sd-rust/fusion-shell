@@ -1,5 +1,32 @@
 Copyright (C) 2016  Sandeep Datta
 
+- Path
+    - AbsPath
+        path1.extention
+        path1.basename
+        path1.dirname
+    - RelPath
+    - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
+
+- Commands
+    - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
+    - show expr - dump variables and expressions to help in debug scripts
+    - grep
+    - find
+    - ls
+    - echo
+    - env
+
+- Piping (inspired by ammonite shell)
+    - collection |  f -> collection.map(f)
+    - collection || f -> collection.flatmap(f)
+    - collection |? f -> collection.filter(f) #filter = select
+    - collection |& f -> collection.reduce(f) #reduce = fold
+    - collection |! f -> collection.foreach(f)
+    - collection |> f -> f(collection)
+
+- Wildcards: *,**,?,{}
+
 - Variables
     - Setting: 
         - Immutable: 
@@ -32,13 +59,6 @@ Copyright (C) 2016  Sandeep Datta
         - Indexable
         - Comparable
     - Enums (like in Rust)
-    - Path
-        - AbsPath
-            path1.extention
-            path1.basename
-            path1.dirname
-        - RelPath
-        - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
     - Option
     - Result
 
@@ -52,7 +72,7 @@ Copyright (C) 2016  Sandeep Datta
         - "width: ${width}px"
         - Quotation: "", '', """ """, r"", r'', r""" """
     - Accept escape chars (even in bare strings): \e, \r, \n, \t, \x, \U etc
-    - Bare strings
+    - Done: Bare strings
 
 - Functions
     - say_hello name = echo $name
@@ -105,18 +125,6 @@ Copyright (C) 2016  Sandeep Datta
     - import abc
 
 
-
-- Piping (inspired by ammonite shell)
-    - collection |  f -> collection.map(f)
-    - collection || f -> collection.flatmap(f)
-    - collection |? f -> collection.filter(f) #filter = select
-    - collection |& f -> collection.reduce(f) #reduce = fold
-    - collection |! f -> collection.foreach(f)
-    - collection |> f -> f(collection)
-
-- Wildcards: *,**,?,{}
-
-
 - Regular expression:r/abc/ig, =~
 
 - Dictionaries / Objects: d = {x:1 y:2}; d = (dict [a b c d])
@@ -146,14 +154,7 @@ Copyright (C) 2016  Sandeep Datta
 
 - Print banner only when running in interactive mode.
 
-- Commands
-    - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
-    - show expr - dump variables and expressions to help in debug scripts
-    - grep
-    - find
-    - ls
-    - echo
-    - env
+
 
 - Library
     - Networking library modeled after the TCL networking model.
