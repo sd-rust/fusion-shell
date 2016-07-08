@@ -7,11 +7,21 @@ use std::path::PathBuf;
 use std::process;
 use std::io;
 use std::result;
+use std::fmt;
 
 #[derive(Debug)]
 pub enum PipeError {
     Io(io::Error),
     MalformedCommand,
+}
+
+impl fmt::Display for PipeError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            PipeError::Io(ref err) => write!(f, "{}", err),
+            PipeError::MalformedCommand => write!(f, "Malformed command"),
+        }
+    }
 }
 
 pub type Result<T> = result::Result<T, PipeError>;

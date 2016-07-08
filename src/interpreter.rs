@@ -10,13 +10,13 @@ fn print_path(val: commands::Result<PathBuf>) {
     match val {
         Ok(p) => println!("{}", p.display()),
         //TODO: Use the Display trait to print err
-        Err(err) => print_err_ln!("Error: {:?}", err),
+        Err(err) => print_err_ln!("Error: {}", err),
     }
 }
 
 fn print_void(val: commands::Result<()>) {
     if let Err(err) = val {
-        print_err_ln!("Error: {:?}", err);
+        print_err_ln!("Error: {}", err);
     }
 }
 
