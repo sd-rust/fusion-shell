@@ -1,6 +1,6 @@
-//Copyright (C) 2016  Sandeep Datta
+// Copyright (C) 2016  Sandeep Datta
 
-//Abstract Semantic Graph
+// Abstract Semantic Graph
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {

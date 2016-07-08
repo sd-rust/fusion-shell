@@ -8,65 +8,17 @@
 
 use std::io;
 use std::io::prelude::*;
-use std::process;
-use std::env;
-use std::path::Path;
+
 use fsh_parser::program;
 
 #[macro_use]
 mod utils;
 mod asg;
+mod commands;
 
 use asg::*;
 
 peg_file! fsh_parser("fsh.peg");
-
-// Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
-static BANNER: &'static str = r#"
- ______         _                _____ _          _ _ 
-|  ____|       (_)              / ____| |        | | |
-| |__ _   _ ___ _  ___  _ __   | (___ | |__   ___| | |
-|  __| | | / __| |/ _ \|  _ \   \___ \|  _ \ / _ \ | |
-| |  | |_| \__ \ | (_) | | | |  ____) | | | |  __/ | |
-|_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
-"#;
-
-fn print_curdir() {
-    match env::current_dir() {
-        Ok(p) => println!("{}", p.display()),
-        Err(err) => {
-            print_err_ln!("Error: Could not query current directory. {}.", err);
-        }
-    }
-}
-
-fn pwd(args: Vec<Expression>) {
-    match args[..] {
-        [] => print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
-    }
-}
-
-fn cd(args: Vec<Expression>) {
-    match args[..] {
-        [Expression::Str(ref s)] => {
-            let root = Path::new(s);
-            if let Err(err) = env::set_current_dir(&root) {
-                print_err_ln!("Error: Could not set current directory. {}.", err);
-            }
-        }
-        [] => print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
-    }
-}
-
-fn exit(args: Vec<Expression>) {
-    match args[..] {
-        [Expression::Int(exit_code)] => process::exit(exit_code as i32),
-        [] => process::exit(0),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
-    }
-}
 
 fn run_prog(prog: Vec<Expression>) {
     for expr in prog {
@@ -75,9 +27,9 @@ fn run_prog(prog: Vec<Expression>) {
             Expression::Str(s) => println!("{}", s),
             Expression::CommandApp(name, args) => {
                 match name.as_str() {
-                    "pwd" => pwd(args),
-                    "cd" => cd(args),
-                    "exit" => exit(args),
+                    "pwd" => commands::pwd(args),
+                    "cd" => commands::cd(args),
+                    "exit" => commands::exit(args),
                     _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
                 }
             }
@@ -85,25 +37,9 @@ fn run_prog(prog: Vec<Expression>) {
     }
 }
 
-fn prompt() -> String {
-    match env::current_dir() {
-        Ok(p) => format!("fsh {}> ", p.display()),
-        Err(err) => {
-            print_err_ln!("Error: Could not query current directory. {}.", err);
-            "fsh > ".to_string()
-        }
-    }
-}
-
-fn show_prompt() {
-    print!("{}", prompt());
-    io::stdout()
-        .flush()
-        .unwrap_or_else(|err| print_err_ln!("Warning: could not flush output stream. {}.", err));
-}
 
 fn do_repl() {
-    show_prompt();
+    utils::show_prompt();
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
     let mut buff = String::new();
@@ -122,13 +58,13 @@ fn do_repl() {
                 Err(err) => print_err_ln!("Error: {}", err),
             }
 
-            show_prompt();
+            utils::show_prompt();
         }
         buff.clear();
     }
 }
 
 fn main() {
-    print_err_ln!("{}", BANNER);
+    utils::show_banner();
     do_repl();
 }
