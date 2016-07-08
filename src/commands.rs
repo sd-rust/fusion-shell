@@ -4,12 +4,29 @@ use asg::*;
 use utils;
 use std::env;
 use std::path::Path;
+use std::path::PathBuf;
 use std::process;
+use std::io;
+use std::result;
 
-pub fn pwd(args: Vec<Expression>) {
+#[derive(Debug)]
+pub enum PipeError {
+    Io(io::Error),
+    MalformedCommand,
+}
+
+pub type Result<T> = result::Result<T, PipeError>;
+
+impl From<io::Error> for PipeError {
+    fn from(err: io::Error) -> PipeError {
+        PipeError::Io(err)
+    }
+}
+
+pub fn pwd(args: Vec<Expression>) -> Result<PathBuf> {
     match args[..] {
-        [] => utils::print_curdir(),
-        _ => print_err_ln!("Warning: Ignoring malformed command."),
+        [] => env::current_dir().map_err(|err| From::from(err)),
+        _ => Err(PipeError::MalformedCommand),
     }
 }
 

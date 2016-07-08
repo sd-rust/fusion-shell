@@ -1,12 +1,8 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Path
-    - AbsPath
-        path1.extention
-        path1.basename
-        path1.dirname
-    - RelPath
-    - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
+- Implement ls.
+
+- Modify commands to return iterators. Use object formatters to show final output.
 
 - Commands
     - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
@@ -167,3 +163,17 @@ Copyright (C) 2016  Sandeep Datta
 - Handle "exit" as a command.
 - Print error messages to stderr
 - Remove all unnecessary unwrap() calls.
+
+
+==========
+ Rejected
+==========
+
+REASON: Use the Rust Path struct.
+- Path
+    - AbsPath
+        path1.extention
+        path1.basename
+        path1.dirname
+    - RelPath
+    - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
