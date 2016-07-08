@@ -54,29 +54,29 @@ fn print_curdir() {
 }
 
 fn pwd(args: Vec<Expression>) {
-    match &args[..] {
-        &[] => print_curdir(),
+    match args[..] {
+        [] => print_curdir(),
         _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
 
 fn cd(args: Vec<Expression>) {
-    match &args[..] {
-        &[Expression::Str(ref s)] => {
+    match args[..] {
+        [Expression::Str(ref s)] => {
             let root = Path::new(s);
             if let Err(err) = env::set_current_dir(&root) {
                 print_err_ln!("Error: Could not set current directory. {}.", err);
             }
         },
-        &[] => print_curdir(),
+        [] => print_curdir(),
         _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
 
 fn exit(args: Vec<Expression>) {
-    match &args[..] {
-        &[Expression::Int(exit_code)] => process::exit(exit_code as i32),
-        &[] => process::exit(0),
+    match args[..] {
+        [Expression::Int(exit_code)] => process::exit(exit_code as i32),
+        [] => process::exit(0),
         _ => print_err_ln!("Warning: Ignoring malformed command.")
     }
 }
@@ -126,10 +126,10 @@ fn do_repl() {
             break;
         }
         {
-            let line = buff.trim_right_matches("\n");
+            let line = buff.trim_right_matches('\n');
 
             //println!("{:?}", program(&line));
-            let maybe_prog = program(&line);
+            let maybe_prog = program(line);
             match maybe_prog {
                 Ok(prog) => run_prog(prog),
                 Err(err) => print_err_ln!("Error: {}", err),
