@@ -14,19 +14,23 @@ fn print_path(val: commands::Result<PathBuf>) {
     }
 }
 
-pub fn run_prog(prog: Vec<Expression>) {
-    for expr in prog {
-        match expr {
-            Expression::Int(i) => println!("{}", i),
-            Expression::Str(s) => println!("{}", s),
-            Expression::CommandApp(name, args) => {
-                match name.as_str() {
-                    "pwd" => print_path(commands::pwd(args)),
-                    "cd" => commands::cd(args),
-                    "exit" => commands::exit(args),
-                    _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
-                }
+fn run_expr(expr: Expression) {
+    match expr {
+        Expression::Int(i) => println!("{}", i),
+        Expression::Str(s) => println!("{}", s),
+        Expression::CommandApp(name, args) => {
+            match name.as_str() {
+                "pwd" => print_path(commands::pwd(args)),
+                "cd" => commands::cd(args),
+                "exit" => commands::exit(args),
+                _ => print_err_ln!("Warning: Ignoring unknown command: {}", name),
             }
         }
+    }
+}
+
+pub fn run_prog(prog: Vec<Expression>) {
+    for expr in prog {
+        run_expr(expr)
     }
 }
