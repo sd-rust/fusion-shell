@@ -15,6 +15,9 @@ Copyright (C) 2016  Sandeep Datta
     - value types / reference types: Everything is a value type in shells?
         - Let numbers be value types and strings be immutable (use COW (Copy on write) when someone tries to modify them)
     - Type inference
+    - Automatic
+        - INIT_DIR - directory from where the shell was started
+        - SCRIPT_PATH, SCRIPT_DIR, SCRIPT_NAME
 
 - Data structures
     - Lists: 
@@ -52,9 +55,21 @@ Copyright (C) 2016  Sandeep Datta
     - Bare strings
 
 - Functions
-    say_hello name = echo $name
+    - say_hello name = echo $name
+    - say_hello name: str = echo $name
+    - repeat func times: int = 
+        func
+        repeat func (times - 1)
     - Nested functions / closures
     - Partial functions
+    - Named parameters (as flags)
+        - socket -server serverProc 9876 
+            - Note: server is a named boolean parameter. Its value is assumed to be false when the flag is not specified.
+    - Support optional parameters
+    - Lambdas: 
+        x y => x == y
+        () => $a
+        x => len x
 
 - Operators
     - Overloaded
@@ -69,7 +84,7 @@ Copyright (C) 2016  Sandeep Datta
 - Error handling
     - Option
     - Result
-    - Mandatory exit code checking
+    - Mandatory exit code checking. Panic on failure.
 
 - Pattern matching
     - List patterns
@@ -86,7 +101,9 @@ Copyright (C) 2016  Sandeep Datta
 - Namespaces?
 
 - Modules 
-    import abc
+    - File is the basic unit of modularity?
+    - import abc
+
 
 
 - Piping (inspired by ammonite shell)
@@ -99,10 +116,7 @@ Copyright (C) 2016  Sandeep Datta
 
 - Wildcards: *,**,?,{}
 
-- Lambdas: 
-    x y => x == y
-    () => $a
-    x => len x
+
 - Regular expression:r/abc/ig, =~
 
 - Dictionaries / Objects: d = {x:1 y:2}; d = (dict [a b c d])
@@ -121,8 +135,6 @@ Copyright (C) 2016  Sandeep Datta
 
 - Add support for external commands: `ls, `ag etc
 
-
-
 - Handle Ctrl+D
 
 - libfusion / libfsh
@@ -134,21 +146,18 @@ Copyright (C) 2016  Sandeep Datta
 
 - Print banner only when running in interactive mode.
 
-==========
- Commands
-==========
-- show expr - dump variables and expressions to help in debug scripts
-- grep
-- find
-- ls
-- echo
-- env
+- Commands
+    - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
+    - show expr - dump variables and expressions to help in debug scripts
+    - grep
+    - find
+    - ls
+    - echo
+    - env
 
-===========
- Variables
-===========
-- INIT_DIR - directory from where the shell was started
-- SCRIPT_PATH, SCRIPT_DIR, SCRIPT_NAME
+- Library
+    - Networking library modeled after the TCL networking model.
+
 
 ======
  Done

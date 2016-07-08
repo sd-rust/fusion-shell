@@ -42,8 +42,6 @@ static BANNER: &'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
-// MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
-
 fn print_curdir() {
     match env::current_dir() {
         Ok(p) => println!("{}", p.display()),
