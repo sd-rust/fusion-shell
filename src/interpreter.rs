@@ -1,7 +1,7 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use commands::{self, PipeValue, PipeError};
-use asg::{Expression, CommandApplication};
+use commands::{self, PipeError};
+use asg::{Expression, CommandApplication, PipeValue};
 
 //For output formatting
 fn print(val: commands::Result<PipeValue>) {
@@ -19,18 +19,29 @@ fn print(val: commands::Result<PipeValue>) {
 }
 
 fn run_expr(expr: Expression) -> commands::Result<PipeValue>{
+    //println!("expr: {:?}", expr);
+
     match expr {
-        Expression::Int(val) => Ok(PipeValue::Int(val)),
-        Expression::Str(val) => Ok(PipeValue::Str(val)),
+        Expression::Value(pipe_val) => Ok(pipe_val),
         Expression::Command(CommandApplication {name, args}) => {
+            
+            //println!("args: {:?}", args);
+
+            let mut computed_args: Vec<PipeValue> = vec![];
+                
+            for arg in args {
+                computed_args.push(try!(run_expr(arg)));
+            }
+
+            //println!("computed_args: {:?}", computed_args);
+
             match name.as_str() {
-                "pwd" => commands::pwd(args),
-                "cd" => commands::cd(args),
-                "exit" => commands::exit(args),
+                "pwd" => commands::pwd(computed_args),
+                "cd" => commands::cd(computed_args),
+                "exit" => commands::exit(computed_args),
                 _ => Err(PipeError::BadCommand),
             }
         }
-        Expression::Map(_, _) => unimplemented!(),
     }
 }
 

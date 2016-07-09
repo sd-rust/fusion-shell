@@ -2,6 +2,16 @@
 
 // Abstract Semantic Graph
 
+use std::path::PathBuf;
+
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub enum PipeValue {
+    None,
+    Int(i64),
+    Str(String),
+    Path(PathBuf),
+}
+
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct CommandApplication {
     pub name: String,
@@ -10,9 +20,13 @@ pub struct CommandApplication {
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
-    Int(i64),
-    Str(String),
-    //TODO: Rename to Command
+    Value(PipeValue),
     Command(CommandApplication),
-    Map(CommandApplication, CommandApplication),
+    //Map(CommandApplication, CommandApplication),
+}
+
+impl From<PipeValue> for Expression {
+    fn from(pv: PipeValue) -> Expression {
+        Expression::Value(pv)
+    }
 }

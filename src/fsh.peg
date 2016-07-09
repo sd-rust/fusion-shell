@@ -1,6 +1,7 @@
 //Copyright (C) 2016  Sandeep Datta
 
-use asg::{Expression, CommandApplication};
+use asg::{Expression, CommandApplication, PipeValue};
+use std::path::PathBuf;
 
 #[pub]
 program -> Vec<Expression>
@@ -18,7 +19,7 @@ expression -> Expression
 
 integer -> Expression
     = WS* d:digits WS* { 
-        Expression::Int(d.parse().unwrap()) 
+        From::from(PipeValue::Int(d.parse().unwrap()))
     }
 
 digits -> String
@@ -28,7 +29,7 @@ digits -> String
 
 string -> Expression
     = WS* "\"" xs:str_chars "\"" WS*  { 
-        Expression::Str(xs)
+        From::from(PipeValue::Str(xs))
     }
 
 str_chars -> String
@@ -56,7 +57,7 @@ identifier -> String
 
 path -> Expression
     = path_char+ {
-        Expression::Str(match_str.to_string())
+        From::from(PipeValue::Path(PathBuf::from(match_str.to_string())))
     }
 
 path_char = !(WS/EOL) .
