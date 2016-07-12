@@ -8,8 +8,8 @@ pub enum Exit {
     Yes(i32),
 }
 
-//TODO: Rename print to handle_result or something better
-//For output formatting
+// TODO: Rename print to handle_result or something better
+// For output formatting
 fn print(val: Result<PipeValue>) -> Exit {
     match val {
         Ok(pv) => {
@@ -28,21 +28,21 @@ fn print(val: Result<PipeValue>) -> Exit {
 }
 
 fn run_expr(expr: Expression) -> Result<PipeValue> {
-    //println!("expr: {:?}", expr);
+    // println!("expr: {:?}", expr);
 
     match expr {
         Expression::Value(pipe_val) => Ok(pipe_val),
-        Expression::Command(CommandApplication {name, args}) => {
-            
-            //println!("args: {:?}", args);
+        Expression::Command(CommandApplication { name, args }) => {
+
+            // println!("args: {:?}", args);
 
             let mut computed_args: Vec<PipeValue> = vec![];
-                
+
             for arg in args {
                 computed_args.push(try!(run_expr(arg)));
             }
 
-            //println!("computed_args: {:?}", computed_args);
+            // println!("computed_args: {:?}", computed_args);
 
             match name.as_str() {
                 "pwd" => commands::pwd(computed_args),

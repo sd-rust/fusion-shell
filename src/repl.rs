@@ -37,18 +37,18 @@ pub fn do_repl() {
                     }
                     Err(err) => print_err_ln!("Error: {}", err),
                 }
-            },
+            }
             Err(ReadlineError::Interrupted) => {
                 print_err_ln!("Ctrl-C");
-                break
-            },
+                break;
+            }
             Err(ReadlineError::Eof) => {
                 print_err_ln!("Ctrl-D");
-                break
-            },
+                break;
+            }
             Err(err) => {
                 print_err_ln!("Error: {}", err);
-                break
+                break;
             }
         }
     }
