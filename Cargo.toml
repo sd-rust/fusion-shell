@@ -5,3 +5,5 @@ authors = ["Sandeep Datta <datta.sandeep@gmail.com>"]
 
 [dependencies]
 peg = "0.3.0"
+rustyline = "0.2.3"
+#rustyline = { path = "../rustyline" }

@@ -3,7 +3,6 @@
 use asg::*;
 use std::env;
 use std::path::PathBuf;
-use std::process;
 use std::io;
 use std::result;
 use std::fmt;
@@ -69,8 +68,8 @@ pub fn cd(args: Vec<PipeValue>) -> Result<PipeValue> {
 
 pub fn exit(args: Vec<PipeValue>) -> Result<PipeValue> {
     match args[..] {
-        [PipeValue::Int(exit_code)] => process::exit(exit_code as i32),
-        [] => process::exit(0),
+        [PipeValue::Int(exit_code)] => Ok(PipeValue::Exit(exit_code as i32)),
+        [] => Ok(PipeValue::Exit(0)),
         _ => Err(PipeError::MalformedCommand),
     }
 }

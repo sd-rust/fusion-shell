@@ -5,6 +5,8 @@
 
 #![plugin(peg_syntax_ext)]
 
+extern crate rustyline;
+
 #[macro_use]
 mod utils;
 mod asg;

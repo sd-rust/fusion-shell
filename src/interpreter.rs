@@ -1,10 +1,16 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use commands::{self, PipeError};
+use commands::{self, PipeError, Result};
 use asg::{Expression, CommandApplication, PipeValue};
 
+pub enum Exit {
+    No,
+    Yes(i32),
+}
+
+//TODO: Rename print to handle_result or something better
 //For output formatting
-fn print(val: commands::Result<PipeValue>) {
+fn print(val: Result<PipeValue>) -> Exit {
     match val {
         Ok(pv) => {
             match pv {
@@ -12,13 +18,16 @@ fn print(val: commands::Result<PipeValue>) {
                 PipeValue::Int(val) => print!("{}", val),
                 PipeValue::Str(val) => print!("{}", val),
                 PipeValue::Path(val) => print!("{}", val.display()),
+                PipeValue::Exit(ecode) => return Exit::Yes(ecode),
             }
         }
         Err(err) => print_err_ln!("Error: {}", err),
     }
+
+    Exit::No
 }
 
-fn run_expr(expr: Expression) -> commands::Result<PipeValue>{
+fn run_expr(expr: Expression) -> Result<PipeValue> {
     //println!("expr: {:?}", expr);
 
     match expr {
@@ -45,9 +54,14 @@ fn run_expr(expr: Expression) -> commands::Result<PipeValue>{
     }
 }
 
-pub fn run_prog(prog: Vec<Expression>) {
+pub fn run_prog(prog: Vec<Expression>) -> Exit {
     for expr in prog {
-        print(run_expr(expr));
+        let maybe_exit = print(run_expr(expr));
         println!("");
+        if let Exit::Yes(_) = maybe_exit {
+            return maybe_exit;
+        }
     }
+
+    Exit::No
 }

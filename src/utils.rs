@@ -1,8 +1,6 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use std::io;
 use std::env;
-use std::io::prelude::*;
 
 // Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
 static BANNER: &'static str = r#"
@@ -28,14 +26,7 @@ pub fn show_banner() {
     print_err_ln!("{}", BANNER);
 }
 
-pub fn show_prompt() {
-    print!("{}", prompt());
-    io::stdout()
-        .flush()
-        .unwrap_or_else(|err| print_err_ln!("Warning: could not flush output stream. {}.", err));
-}
-
-fn prompt() -> String {
+pub fn prompt() -> String {
     match env::current_dir() {
         Ok(p) => format!("fsh {}> ", p.display()),
         Err(err) => {

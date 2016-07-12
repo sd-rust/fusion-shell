@@ -10,6 +10,7 @@ pub enum PipeValue {
     Int(i64),
     Str(String),
     Path(PathBuf),
+    Exit(i32),
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]

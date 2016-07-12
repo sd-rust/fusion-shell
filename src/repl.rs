@@ -1,35 +1,56 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use std::io;
-use std::io::BufRead;
+use std::process;
 
 use utils;
-use interpreter;
+use interpreter::{self, Exit};
 
 use fsh_parser;
 
+use rustyline::error::ReadlineError;
+use rustyline::Editor;
+
 pub fn do_repl() {
-    utils::show_prompt();
-    let stdin = io::stdin();
-    let mut stdin = stdin.lock();
-    let mut buff = String::new();
-    loop {
-        if let Err(err) = stdin.read_line(&mut buff) {
-            println!("Error: Could not read line from input stream. {}.", err);
-            break;
-        }
-        {
-            let line = buff.trim_right_matches('\n');
-
-            let maybe_prog = fsh_parser::program(line);
-
-            match maybe_prog {
-                Ok(prog) => interpreter::run_prog(prog),
-                Err(err) => print_err_ln!("Error: {}", err),
-            }
-
-            utils::show_prompt();
-        }
-        buff.clear();
+    let mut rl = Editor::new();
+    let history_file = "fsh_history";
+    if let Err(_) = rl.load_history(history_file) {
+        print_err_ln!("No previous history.");
     }
+
+    loop {
+        let readline = rl.readline(&utils::prompt());
+        match readline {
+            Ok(line) => {
+                let maybe_prog = fsh_parser::program(&line);
+
+                match maybe_prog {
+                    Ok(prog) => {
+                        // Only add syntatically valid entries
+                        rl.add_history_entry(&line);
+
+                        // TODO: Return exit code from do_repl() and call
+                        // process::exit() from main()
+                        if let Exit::Yes(ecode) = interpreter::run_prog(prog) {
+                            rl.save_history(history_file).unwrap();
+                            process::exit(ecode);
+                        }
+                    }
+                    Err(err) => print_err_ln!("Error: {}", err),
+                }
+            },
+            Err(ReadlineError::Interrupted) => {
+                print_err_ln!("Ctrl-C");
+                break
+            },
+            Err(ReadlineError::Eof) => {
+                print_err_ln!("Ctrl-D");
+                break
+            },
+            Err(err) => {
+                print_err_ln!("Error: {}", err);
+                break
+            }
+        }
+    }
+    rl.save_history(history_file).unwrap();
 }
