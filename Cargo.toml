@@ -2,8 +2,11 @@
 name = "fusion-shell"
 version = "0.1.0"
 authors = ["Sandeep Datta <datta.sandeep@gmail.com>"]
+build = "build.rs"
 
 [dependencies]
-peg-syntax-ext = "0.4.0"
 rustyline = "0.2.3"
 #rustyline = { path = "../rustyline" }
+
+[build-dependencies]
+peg = { version = "0.4" }

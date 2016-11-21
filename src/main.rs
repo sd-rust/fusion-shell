@@ -3,8 +3,6 @@
 #![feature(plugin)]
 #![feature(slice_patterns)]
 
-#![plugin(peg_syntax_ext)]
-
 extern crate rustyline;
 
 #[macro_use]
@@ -14,7 +12,9 @@ mod commands;
 mod interpreter;
 mod repl;
 
-peg_file! fsh_parser("fsh.peg");
+mod fsh_parser {
+    include!(concat!(env!("OUT_DIR"), "/fsh.rs"));
+}
 
 fn main() {
     utils::show_banner();
