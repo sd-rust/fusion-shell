@@ -22,20 +22,16 @@ integer -> Expression
         From::from(PipeValue::Int(d.parse().unwrap()))
     }
 
-digits -> String
-    = [0-9]+ { 
-        match_str.to_string() 
-    }
+digits -> &'input str
+    = $([0-9]+)
 
 string -> Expression
     = WS* "\"" xs:str_chars "\"" WS*  { 
-        From::from(PipeValue::Str(xs))
+        From::from(PipeValue::Str(xs.to_string()))
     }
 
-str_chars -> String
-    = (!"\"" .)* {
-        match_str.to_string()
-    }
+str_chars -> &'input str
+    = $((!"\"" .)*)
 
 command -> Expression
     = id:identifier maybe_args:command_args? {
@@ -50,14 +46,12 @@ command_args -> Vec<Expression>
         e 
     }
 
-identifier -> String
-    = [_a-zA-Z][_a-zA-Z0-9]* { 
-        match_str.to_string()
-    }
+identifier -> &'input str
+    = $([_a-zA-Z][_a-zA-Z0-9]*)
 
 path -> Expression
-    = path_char+ {
-        From::from(PipeValue::Path(PathBuf::from(match_str.to_string())))
+    = p: $(path_char+) {
+        From::from(PipeValue::Path(PathBuf::from(p.to_string())))
     }
 
 path_char = !(WS/EOL) .
