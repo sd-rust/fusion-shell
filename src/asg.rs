@@ -10,7 +10,7 @@ pub enum PipeValue {
     Int(i64),
     Str(String),
     Path(PathBuf),
-    Exit(i32),
+    Exit(i32), // TODO: rename to Error?
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
