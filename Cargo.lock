@@ -51,3 +51,11 @@ name = "unicode-width"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
+[metadata]
+"checksum bitflags 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3"
+"checksum encode_unicode 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "28d65f1f5841ef7c6792861294b72beda34c664deb8be27970f36c306b7da1ce"
+"checksum libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)" = "d781ca9ed9bbe09595f6bbdeb9aeacb6b46154f1dd8c457a048d7d3c02561071"
+"checksum nix 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "bfb3ddedaa14746434a02041940495bf11325c22f6d36125d3bdd56090d50a79"
+"checksum peg 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)" = "2b5eb263593c6dde7cebf6422e655e1b7fddd0827721c00c05ac0c964ebed4da"
+"checksum rustyline 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "c89d7fbec10381ade2f9db491b1ebd8a84a59fb7acf64b463aaf3a338985aca3"
+"checksum unicode-width 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "2d6722facc10989f63ee0e20a83cd4e1714a9ae11529403ac7e0afd069abc39e"

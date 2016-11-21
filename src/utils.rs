@@ -12,7 +12,7 @@ static BANNER: &'static str = r#"
 |_|   \__ _|___/_|\___/|_| |_| |_____/|_| |_|\___|_|_|
 "#;
 
-macro_rules! print_err_ln {
+macro_rules! println_err {
     ($($arg:tt)*) => ({
         use std::io::Write;
         match writeln!(&mut ::std::io::stderr(), $($arg)* ) {
@@ -23,14 +23,14 @@ macro_rules! print_err_ln {
 }
 
 pub fn show_banner() {
-    print_err_ln!("{}", BANNER);
+    println_err!("{}", BANNER);
 }
 
 pub fn prompt() -> String {
     match env::current_dir() {
         Ok(p) => format!("fsh {}> ", p.display()),
         Err(err) => {
-            print_err_ln!("Error: Could not query current directory. {}.", err);
+            println_err!("Error: Could not query current directory. {}.", err);
             "fsh > ".to_string()
         }
     }
