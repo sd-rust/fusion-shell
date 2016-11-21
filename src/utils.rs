@@ -22,6 +22,16 @@ macro_rules! println_err {
     })
 }
 
+macro_rules! print_err {
+    ($($arg:tt)*) => ({
+        use std::io::Write;
+        match write!(&mut ::std::io::stderr(), $($arg)* ) {
+            Ok(_) => {},
+            Err(x) => panic!("Unable to write to stderr (file handle closed?): {}", x),
+        }
+    })
+}
+
 pub fn show_banner() {
     println_err!("{}", BANNER);
 }

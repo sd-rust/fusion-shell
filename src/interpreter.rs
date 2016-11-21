@@ -21,7 +21,7 @@ fn print(val: Result<PipeValue>) -> Exit {
                 PipeValue::Exit(ecode) => return Exit::Yes(ecode),
             }
         }
-        Err(err) => println_err!("Error: {}", err),
+        Err(err) => print_err!("Error: {}", err),
     }
 
     Exit::No
