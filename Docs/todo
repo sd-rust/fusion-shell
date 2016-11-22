@@ -1,6 +1,13 @@
 Copyright (C) 2016  Sandeep Datta
 
 - Rename Pipe* to Stream*. Examples: PipeValue -> StreamElement
+
+- All commands should return Vec<Result<StreamElement, StreamError>>
+
+- Change MalformedCommand into something more specific such as InvalidArgument(Argname:String), InvalidArity(ExpectedArity:int, GivenArity:int) etc.
+
+- Use object formatters to show final output.
+
 - Redefine PipeValue to ...
     
     pub enum StreamElement<S: Streamable> {
@@ -8,9 +15,7 @@ Copyright (C) 2016  Sandeep Datta
         Exit(i32), // TODO: rename to Error?
     }
 
-- Modify commands to return iterators. Use object formatters to show final output.
 - Implement planned features.
-
 
 
 ======
