@@ -1,0 +1,36 @@
+Copyright (C) 2016  Sandeep Datta
+
+- Rename Pipe* to Stream*. Examples: PipeValue -> StreamElement
+- Redefine PipeValue to ...
+    
+    pub enum StreamElement<S: Streamable> {
+        Some(S),
+        Exit(i32), // TODO: rename to Error?
+    }
+
+- Modify commands to return iterators. Use object formatters to show final output.
+- Implement planned features.
+
+
+
+======
+ Done
+======
+- Accept bare strings as arguments
+- Handle "exit" as a command.
+- Print error messages to stderr
+- Remove all unnecessary unwrap() calls.
+- Generate fsh_parser.rs from fsh.peg at build time using the peg.rs file from rust-peg as a template for a build.rs file.
+
+==========
+ Rejected
+==========
+
+REASON: Use the Rust Path struct.
+- Path
+    - AbsPath
+        path1.extention
+        path1.basename
+        path1.dirname
+    - RelPath
+    - Auto convert strings into paths in path contexts. Raise errors when conversion fails.

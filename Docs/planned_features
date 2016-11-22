@@ -1,8 +1,4 @@
-Copyright (C) 2016  Sandeep Datta
-
 - Implement ls.
-
-- Modify commands to return iterators. Use object formatters to show final output.
 
 - Commands
     - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
@@ -154,26 +150,3 @@ Copyright (C) 2016  Sandeep Datta
 
 - Library
     - Networking library modeled after the TCL networking model.
-
-
-======
- Done
-======
-- Accept bare strings as arguments
-- Handle "exit" as a command.
-- Print error messages to stderr
-- Remove all unnecessary unwrap() calls.
-- Generate fsh_parser.rs from fsh.peg at build time using the peg.rs file from rust-peg as a template for a build.rs file.
-
-==========
- Rejected
-==========
-
-REASON: Use the Rust Path struct.
-- Path
-    - AbsPath
-        path1.extention
-        path1.basename
-        path1.dirname
-    - RelPath
-    - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
