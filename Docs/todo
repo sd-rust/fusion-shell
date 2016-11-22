@@ -1,14 +1,19 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Rename Pipe* to Stream*. Examples: PipeValue -> StreamElement
+- Rename Pipe* to Stream*. Examples: StreamElement -> StreamElement
 
 - All commands should return Vec<Result<StreamElement, StreamError>>
 
-- Change MalformedCommand into something more specific such as InvalidArgument(Argname:String), InvalidArity(ExpectedArity:int, GivenArity:int) etc.
+- Renamed MalformedCommand to CommandSyntaxError
+    CommandSyntaxError { Commandname: String, err: CommandSyntaxErrorType };
+    enum CommandSyntaxErrorType {
+        InvalidArgument {Argname:String }, 
+        InvalidArity {ExpectedArity:int, GivenArity:int},
+    }
 
 - Use object formatters to show final output.
 
-- Redefine PipeValue to ...
+- Redefine StreamElement to ...
     
     pub enum StreamElement<S: Streamable> {
         Some(S),

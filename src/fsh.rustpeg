@@ -1,6 +1,6 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use asg::{Expression, CommandApplication, PipeValue};
+use asg::{Expression, CommandApplication, StreamElement};
 use std::path::PathBuf;
 
 #[pub]
@@ -19,7 +19,7 @@ expression -> Expression
 
 integer -> Expression
     = WS* d:digits WS* { 
-        From::from(PipeValue::Int(d.parse().unwrap()))
+        From::from(StreamElement::Int(d.parse().unwrap()))
     }
 
 digits -> &'input str
@@ -27,7 +27,7 @@ digits -> &'input str
 
 string -> Expression
     = WS* "\"" xs:str_chars "\"" WS*  { 
-        From::from(PipeValue::Str(xs.to_string()))
+        From::from(StreamElement::Str(xs.to_string()))
     }
 
 str_chars -> &'input str
@@ -51,7 +51,7 @@ identifier -> &'input str
 
 path -> Expression
     = p: $(path_char+) {
-        From::from(PipeValue::Path(PathBuf::from(p.to_string())))
+        From::from(StreamElement::Path(PathBuf::from(p.to_string())))
     }
 
 path_char = !(WS/EOL) .

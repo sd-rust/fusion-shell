@@ -5,7 +5,7 @@
 use std::path::PathBuf;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub enum PipeValue {
+pub enum StreamElement {
     None,
     Int(i64),
     Str(String),
@@ -21,13 +21,13 @@ pub struct CommandApplication {
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
-    Value(PipeValue),
+    Value(StreamElement),
     Command(CommandApplication),
     //Map(CommandApplication, CommandApplication),
 }
 
-impl From<PipeValue> for Expression {
-    fn from(pv: PipeValue) -> Expression {
+impl From<StreamElement> for Expression {
+    fn from(pv: StreamElement) -> Expression {
         Expression::Value(pv)
     }
 }

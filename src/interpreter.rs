@@ -1,7 +1,7 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use commands::{self, PipeError, Result};
-use asg::{Expression, CommandApplication, PipeValue};
+use commands::{self, StreamError, Result};
+use asg::{Expression, CommandApplication, StreamElement};
 
 pub enum Exit {
     No,
@@ -10,15 +10,15 @@ pub enum Exit {
 
 // TODO: Rename print to handle_result or something better
 // For output formatting
-fn print(val: Result<PipeValue>) -> Exit {
+fn print(val: Result<StreamElement>) -> Exit {
     match val {
         Ok(pv) => {
             match pv {
-                PipeValue::None => (),
-                PipeValue::Int(val) => print!("{}", val),
-                PipeValue::Str(val) => print!("{}", val),
-                PipeValue::Path(val) => print!("{}", val.display()),
-                PipeValue::Exit(ecode) => return Exit::Yes(ecode),
+                StreamElement::None => (),
+                StreamElement::Int(val) => print!("{}", val),
+                StreamElement::Str(val) => print!("{}", val),
+                StreamElement::Path(val) => print!("{}", val.display()),
+                StreamElement::Exit(ecode) => return Exit::Yes(ecode),
             }
         }
         Err(err) => print_err!("Error: {}", err),
@@ -27,7 +27,7 @@ fn print(val: Result<PipeValue>) -> Exit {
     Exit::No
 }
 
-fn run_expr(expr: Expression) -> Result<PipeValue> {
+fn run_expr(expr: Expression) -> Result<StreamElement> {
     // println!("expr: {:?}", expr);
 
     match expr {
@@ -36,7 +36,7 @@ fn run_expr(expr: Expression) -> Result<PipeValue> {
 
             // println!("args: {:?}", args);
 
-            let mut computed_args: Vec<PipeValue> = vec![];
+            let mut computed_args: Vec<StreamElement> = vec![];
 
             for arg in args {
                 computed_args.push(try!(run_expr(arg)));
@@ -48,7 +48,7 @@ fn run_expr(expr: Expression) -> Result<PipeValue> {
                 "pwd" => commands::pwd(computed_args),
                 "cd" => commands::cd(computed_args),
                 "exit" => commands::exit(computed_args),
-                _ => Err(PipeError::BadCommand),
+                _ => Err(StreamError::BadCommand),
             }
         }
     }

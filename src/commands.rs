@@ -8,68 +8,68 @@ use std::result;
 use std::fmt;
 
 #[derive(Debug)]
-pub enum PipeError {
+pub enum StreamError {
     Io(io::Error),
     MalformedCommand,
     BadCommand,
 }
 
-impl fmt::Display for PipeError {
+impl fmt::Display for StreamError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            PipeError::Io(ref err) => write!(f, "{}", err),
-            PipeError::MalformedCommand => write!(f, "Malformed command"),
-            PipeError::BadCommand => write!(f, "Bad command"),
+            StreamError::Io(ref err) => write!(f, "{}", err),
+            StreamError::MalformedCommand => write!(f, "Malformed command"),
+            StreamError::BadCommand => write!(f, "Bad command"),
         }
     }
 }
 
-pub type Result<T> = result::Result<T, PipeError>;
+pub type Result<T> = result::Result<T, StreamError>;
 
-impl From<io::Error> for PipeError {
-    fn from(err: io::Error) -> PipeError {
-        PipeError::Io(err)
+impl From<io::Error> for StreamError {
+    fn from(err: io::Error) -> StreamError {
+        StreamError::Io(err)
     }
 }
 
-impl From<PathBuf> for PipeValue {
-    fn from(path_buff: PathBuf) -> PipeValue {
-        PipeValue::Path(path_buff)
+impl From<PathBuf> for StreamElement {
+    fn from(path_buff: PathBuf) -> StreamElement {
+        StreamElement::Path(path_buff)
     }
 }
 
-impl From<()> for PipeValue {
-    fn from(_: ()) -> PipeValue {
-        PipeValue::None
+impl From<()> for StreamElement {
+    fn from(_: ()) -> StreamElement {
+        StreamElement::None
     }
 }
 
-pub fn pwd(args: Vec<PipeValue>) -> Result<PipeValue> {
+pub fn pwd(args: Vec<StreamElement>) -> Result<StreamElement> {
     match args[..] {
         [] => {
             env::current_dir()
                 .map(From::from)
                 .map_err(From::from)
         }
-        _ => Err(PipeError::MalformedCommand),
+        _ => Err(StreamError::MalformedCommand),
     }
 }
 
-pub fn cd(args: Vec<PipeValue>) -> Result<PipeValue> {
+pub fn cd(args: Vec<StreamElement>) -> Result<StreamElement> {
     match args[..] {
-        [PipeValue::Path(ref p)] => {
+        [StreamElement::Path(ref p)] => {
             env::set_current_dir(p)
                 .map(From::from)
                 .map_err(From::from)
         }
-        _ => Err(PipeError::MalformedCommand),
+        _ => Err(StreamError::MalformedCommand),
     }
 }
 
-pub fn exit(args: Vec<PipeValue>) -> Result<PipeValue> {
+pub fn exit(args: Vec<StreamElement>) -> Result<StreamElement> {
     match args[..] {
-        [PipeValue::Int(exit_code)] => Ok(PipeValue::Exit(exit_code as i32)),
-        [] => Ok(PipeValue::Exit(0)),
-        _ => Err(PipeError::MalformedCommand),
+        [StreamElement::Int(exit_code)] => Ok(StreamElement::Exit(exit_code as i32)),
+        [] => Ok(StreamElement::Exit(0)),
+        _ => Err(StreamError::MalformedCommand),
     }
 }
