@@ -1,1 +1,8 @@
-1. Bad argument to cd results in a malformed command error.
+1. cd 1 - Error: Incorrect argument type for arg 0
+
+
+
+
+FIXED
+
+1. Bad argument to cd results in a malformed command error. eg: cd 1 and 1 is not a valid path.

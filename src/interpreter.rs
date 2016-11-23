@@ -1,6 +1,6 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use commands::{self, StreamError, Result};
+use commands::{self, StreamError, Stream};
 use asg::{Expression, CommandApplication, StreamElement};
 
 pub enum Exit {
@@ -10,36 +10,38 @@ pub enum Exit {
 
 // TODO: Rename print to handle_result or something better
 // For output formatting
-fn print(val: Result<StreamElement>) -> Exit {
-    match val {
-        Ok(pv) => {
-            match pv {
-                StreamElement::None => (),
-                StreamElement::Int(val) => print!("{}", val),
-                StreamElement::Str(val) => print!("{}", val),
-                StreamElement::Path(val) => print!("{}", val.display()),
-                StreamElement::Exit(ecode) => return Exit::Yes(ecode),
+fn print(stream: Stream) -> Exit {
+    for maybe_val in stream {
+        match maybe_val {
+            Ok(val) => {
+                match val {
+                    StreamElement::None => (),
+                    StreamElement::Int(val) => print!("{}", val),
+                    StreamElement::Str(val) => print!("{}", val),
+                    StreamElement::Path(val) => print!("{}", val.display()),
+                    StreamElement::Exit(ecode) => return Exit::Yes(ecode),
+                }
             }
+            Err(err) => print_err!("Error: {}", err),
         }
-        Err(err) => print_err!("Error: {}", err),
     }
 
     Exit::No
 }
 
-fn run_expr(expr: Expression) -> Result<StreamElement> {
+fn run_expr(expr: Expression) -> Stream {
     // println!("expr: {:?}", expr);
 
     match expr {
-        Expression::Value(pipe_val) => Ok(pipe_val),
+        Expression::Value(pipe_val) => vec![Ok(pipe_val)],
         Expression::Command(CommandApplication { name, args }) => {
 
             // println!("args: {:?}", args);
 
-            let mut computed_args: Vec<StreamElement> = vec![];
+            let mut computed_args: Vec<Stream> = vec![];
 
             for arg in args {
-                computed_args.push(try!(run_expr(arg)));
+                computed_args.push(run_expr(arg));
             }
 
             // println!("computed_args: {:?}", computed_args);
@@ -48,7 +50,7 @@ fn run_expr(expr: Expression) -> Result<StreamElement> {
                 "pwd" => commands::pwd(computed_args),
                 "cd" => commands::cd(computed_args),
                 "exit" => commands::exit(computed_args),
-                _ => Err(StreamError::BadCommand),
+                _ => vec![Err(StreamError::BadCommand)],
             }
         }
     }
