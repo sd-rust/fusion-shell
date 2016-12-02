@@ -23,18 +23,18 @@
     - Setting: 
         - Immutable: 
             - Local to current shell: x = 10;
-            - Exported (to other shell processes): pub x = 10;
-            - Exported to other non shell processes: export x;
+            - Exported (to other shell processes): pub x = 10; Non string values can be passed without serialization.
+            - Exported to other non shell processes: export x; Values must be serialized as strings. Will use the platform environment variable mechanism.
         - Mutable: var y = "abc";
         - export keyword for exporting predefined variables
     - Getting: echo $x $y
     - Deleting: del x, y;
     - Scoping rules
     - Persistence / Serialization?
-    - value types / reference types: Everything is a value type in shells?
+    - Value types / Reference types: Everything is a value type in shells?
         - Let numbers be value types and strings be immutable (use COW (Copy on write) when someone tries to modify them)
     - Type inference
-    - Automatic
+    - Automatic variables
         - INIT_DIR - directory from where the shell was started
         - SCRIPT_PATH, SCRIPT_DIR, SCRIPT_NAME
 
@@ -135,8 +135,6 @@
 
 - Add support for external commands: `ls, `ag etc
 
-- Handle Ctrl+D
-
 - libfusion / libfsh
     - Can be used by regular apps to interact with fusion shell
         - Apps can use data types defined by the shell
@@ -147,6 +145,6 @@
 - Print banner only when running in interactive mode.
 
 
-
 - Library
-    - Networking library modeled after the TCL networking model.
+    - Networking library 
+        - Modeled after the TCL networking model.

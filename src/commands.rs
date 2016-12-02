@@ -10,6 +10,7 @@ use std::fmt;
 pub enum StreamError {
     Io(io::Error),
     CommandArity(usize, usize, usize), // (min, max, Found)
+    //TODO: Rename to ArgStreamLen
     ArgStreamArity(usize, usize, usize, usize), //(Arg Index, min, max, Found)
     ArgType(usize),
     BadCommand,
