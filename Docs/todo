@@ -1,13 +1,7 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Renamed MalformedCommand to CommandSyntaxError
-    CommandSyntaxError { Commandname: String, err: CommandSyntaxErrorType };
-    enum CommandSyntaxErrorType {
-        InvalidArgument {Argname:String }, 
-        InvalidArity {ExpectedArity:int, GivenArity:int},
-    }
 
-- Use object formatters to show final output.
+- Use Display trait to show final output.
 
 - Redefine StreamElement to ...
     
@@ -30,6 +24,12 @@ Copyright (C) 2016  Sandeep Datta
 - Generate fsh_parser.rs from fsh.peg at build time using the peg.rs file from rust-peg as a template for a build.rs file.
 - Rename Pipe* to Stream*. Examples: StreamElement -> StreamElement
 - Handle Ctrl+D
+- Renamed MalformedCommand to CommandSyntaxError
+    CommandSyntaxError { Commandname: String, err: CommandSyntaxErrorType };
+    enum CommandSyntaxErrorType {
+        InvalidArgument {Argname:String }, 
+        InvalidArity {ExpectedArity:int, GivenArity:int},
+    }
 
 ==========
  Rejected

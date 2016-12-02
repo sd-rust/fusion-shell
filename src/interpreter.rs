@@ -15,11 +15,8 @@ fn print(stream: Stream) -> Exit {
         match maybe_val {
             Ok(val) => {
                 match val {
-                    StreamElement::None => (),
-                    StreamElement::Int(val) => print!("{}", val),
-                    StreamElement::Str(val) => print!("{}", val),
-                    StreamElement::Path(val) => print!("{}", val.display()),
                     StreamElement::Exit(ecode) => return Exit::Yes(ecode),
+                    _ => print!("{}", val),
                 }
             }
             Err(err) => print_err!("Error: {}", err),
@@ -40,6 +37,7 @@ fn run_expr(expr: Expression) -> Stream {
 
             let mut computed_args: Vec<Stream> = vec![];
 
+            //Evaluate args
             for arg in args {
                 computed_args.push(run_expr(arg));
             }

@@ -1,13 +1,20 @@
 - Implement ls.
 
 - Commands
+    - help
     - MFU commands: history | cut -d" " -f1 | sort | uniq -c | sort -r -n -k 1 | head -50
-    - show expr - dump variables and expressions to help in debug scripts
+    - show expr - dump variables and expressions to help in debug scripts.
+        > a = 10
+        > show a
+        a = 10
+        > echo a
+        10
     - grep
     - find
     - ls
     - echo
     - env
+
 
 - Piping (inspired by ammonite shell)
     - collection |  f -> collection.map(f)
