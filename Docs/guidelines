@@ -1,0 +1,4 @@
+- Use Display trait to show final output.
+- All commands should return Vec<Result<StreamElement, StreamError>>
+- Print error messages to stderr
+- Remove all unnecessary unwrap() calls.
