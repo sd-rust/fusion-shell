@@ -42,7 +42,7 @@ pub struct FunctionParam {
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
     Value(Primitive),
-    FunctionDefinition { name: String , params: Vec<FunctionParam> },
+    FunctionDefinition { name: String , params: Vec<FunctionParam>, body: Vec<Expression> },
 }
 
 impl From<Primitive> for Expression {

@@ -35,7 +35,7 @@ pub fn do_repl() {
                         //     process::exit(ecode);
                         // }
                         
-                        println!("{:?}", prog);
+                        println!("{:#?}", prog);
                     }
                     Err(err) => println_err!("Error: {}", err),
                 }

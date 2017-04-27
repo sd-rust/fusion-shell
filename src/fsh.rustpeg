@@ -46,6 +46,7 @@ function_definition -> Expression
         Expression::FunctionDefinition { 
             name: id.to_string(), 
             params: params,
+            body: body,
         }
     }
 
@@ -57,8 +58,8 @@ function_param -> FunctionParam
         }
     }
     
-function_body -> Expression
-    = expression
+function_body -> Vec<Expression>
+    = expression+
 
 identifier -> &'input str
     = WS* e:($([_a-zA-Z][_a-zA-Z0-9]*)) WS* {
