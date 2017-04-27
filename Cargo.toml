@@ -9,4 +9,4 @@ rustyline = "0.2.3"
 #rustyline = { path = "../rustyline" }
 
 [build-dependencies]
-peg = { version = "0.4" }
+peg = { version = "0.5" }

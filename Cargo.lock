@@ -2,7 +2,7 @@
 name = "fusion-shell"
 version = "0.1.0"
 dependencies = [
- "peg 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "peg 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustyline 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -18,7 +18,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libc"
-version = "0.2.13"
+version = "0.2.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -27,20 +27,20 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "peg"
-version = "0.4.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "quote 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quote 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "quote"
-version = "0.3.5"
+version = "0.3.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -49,22 +49,22 @@ version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "encode_unicode 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "nix 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "unicode-width 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unicode-width 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "unicode-width"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
 "checksum bitflags 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3"
 "checksum encode_unicode 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "28d65f1f5841ef7c6792861294b72beda34c664deb8be27970f36c306b7da1ce"
-"checksum libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)" = "d781ca9ed9bbe09595f6bbdeb9aeacb6b46154f1dd8c457a048d7d3c02561071"
+"checksum libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)" = "babb8281da88cba992fa1f4ddec7d63ed96280a1a53ec9b919fd37b53d71e502"
 "checksum nix 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "bfb3ddedaa14746434a02041940495bf11325c22f6d36125d3bdd56090d50a79"
-"checksum peg 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "b2f7b0a8240dbf3d5cca65bba9791de310ce783d6e1426e56dc1278356b8017a"
-"checksum quote 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "ea1e0c9bc6bfb0a60d539aab6e338207c1a5456e62f5bd5375132cee119aa4b3"
+"checksum peg 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "5fd5b23b4705900a7dd1e40a5d689bd854840e9ed9d1259ee936fb1752b771d6"
+"checksum quote 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)" = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
 "checksum rustyline 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "c89d7fbec10381ade2f9db491b1ebd8a84a59fb7acf64b463aaf3a338985aca3"
-"checksum unicode-width 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "2d6722facc10989f63ee0e20a83cd4e1714a9ae11529403ac7e0afd069abc39e"
+"checksum unicode-width 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "bf3a113775714a22dcb774d8ea3655c53a32debae63a063acc00a91cc586245f"

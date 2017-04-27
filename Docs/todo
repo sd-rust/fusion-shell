@@ -1,6 +1,8 @@
 Copyright (C) 2016  Sandeep Datta
 
 
+- Add help command.
+
 - Redefine StreamElement to ...
     
     pub enum StreamElement<S: Streamable> {

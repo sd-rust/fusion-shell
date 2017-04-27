@@ -15,7 +15,10 @@ program -> Vec<Expression>
     }
 
 expression -> Expression
-    = integer / string / command
+    = number / string / command
+
+number -> Expression
+    = integer
 
 integer -> Expression
     = WS* d:digits WS* { 
