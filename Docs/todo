@@ -8,6 +8,8 @@ Copyright (C) 2016  Sandeep Datta
         Exit(i32), // TODO: rename to Error?
     }
 
+- Print banner only when running in interactive mode.
+
 - Implement planned features.
 
 
