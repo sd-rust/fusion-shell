@@ -1,0 +1,1 @@
+greet x = "Hello $x"
