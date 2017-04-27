@@ -7,20 +7,17 @@ use std::path::PathBuf;
 // function definitions
 
 pub program -> Vec<Expression>
-    = e1:(e0:statement EOL {e0})* e2:statement? EOF {
-        let mut stmnts = vec![];
-        stmnts.extend(e1);
+    = e1:(e0:expression EOL {e0})* e2:expression? EOF {
+        let mut exprs = vec![];
+        exprs.extend(e1);
         if let Some(e) = e2 {
-            stmnts.push(e);
+            exprs.push(e);
         }
-        stmnts
+        exprs
     }
 
-statement -> Expression
-    = expression / function_definition
-
 expression -> Expression
-    = number / string
+    = number / string / function_definition
 
 number -> Expression
     = integer

@@ -1,8 +1,5 @@
 Copyright (C) 2016  Sandeep Datta
 
-- Add function body to FunctionDefinition
-
-- Rename Expression to Statement
 
 - Add help command.
 
@@ -21,6 +18,7 @@ Copyright (C) 2016  Sandeep Datta
 ======
  Done
 ======
+- Add function body to FunctionDefinition
 - All commands should return Vec<Result<StreamElement, StreamError>>
 - Accept bare strings as arguments
 - Handle "exit" as a command.
@@ -49,3 +47,6 @@ REASON: Use the Rust Path struct.
         path1.dirname
     - RelPath
     - Auto convert strings into paths in path contexts. Raise errors when conversion fails.
+
+REASON: Function definitions should be considered as expressions too!
+- Rename Expression to Statement
