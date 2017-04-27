@@ -11,7 +11,7 @@ use rustyline::error::ReadlineError;
 use rustyline::Editor;
 
 pub fn do_repl() {
-    let mut rl = Editor::new();
+    let mut rl = Editor::<()>::new();
     let history_file = "fsh_history";
     if let Err(_) = rl.load_history(history_file) {
         println_err!("No previous history.");

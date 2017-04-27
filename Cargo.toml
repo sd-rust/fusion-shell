@@ -5,7 +5,7 @@ authors = ["Sandeep Datta <datta.sandeep@gmail.com>"]
 build = "build.rs"
 
 [dependencies]
-rustyline = "0.2.3"
+rustyline = "1.0"
 #rustyline = { path = "../rustyline" }
 
 [build-dependencies]
