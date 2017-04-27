@@ -1,21 +1,26 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use asg::{Expression, FunctionApplication, Primitive};
+use asg::{Expression, FunctionParam, Primitive};
 use std::path::PathBuf;
 
-#[pub]
-program -> Vec<Expression>
-    = e1:(e0:expression EOL {e0})* e2:expression? EOF {
-        let mut exprs = vec![];
-        exprs.extend(e1);
+// TODO: remove hardcoded EOL and add support for multiline
+// function definitions
+
+pub program -> Vec<Expression>
+    = e1:(e0:statement EOL {e0})* e2:statement? EOF {
+        let mut stmnts = vec![];
+        stmnts.extend(e1);
         if let Some(e) = e2 {
-            exprs.push(e);
+            stmnts.push(e);
         }
-        exprs
+        stmnts
     }
 
+statement -> Expression
+    = expression / function_definition
+
 expression -> Expression
-    = number / string / function
+    = number / string
 
 number -> Expression
     = integer
@@ -36,26 +41,36 @@ string -> Expression
 str_chars -> &'input str
     = $((!"\"" .)*)
 
-function -> Expression
-    = id:identifier maybe_args:function_args? {
-        match maybe_args {
-            Some(args) => Expression::Function(FunctionApplication {name: id.to_string(), args: args}),
-            None => Expression::Function(FunctionApplication {name: id.to_string(), args: vec![]})
+function_definition -> Expression
+    = id:identifier params:function_param* token<"="> body:function_body {
+        Expression::FunctionDefinition { 
+            name: id.to_string(), 
+            params: params,
         }
     }
 
-function_args -> Vec<Expression>
-    = WS+ e:(integer / string / path)* { 
-        e 
+function_param -> FunctionParam
+    = id:identifier {
+        FunctionParam {
+            name: id.to_string(),
+            param_type: "<unresolved>".to_string()
+        }
     }
+    
+function_body -> Expression
+    = expression
 
 identifier -> &'input str
-    = $([_a-zA-Z][_a-zA-Z0-9]*)
+    = WS* e:($([_a-zA-Z][_a-zA-Z0-9]*)) WS* {
+        e
+    }
 
 path -> Expression
     = p: $(path_char+) {
         From::from(Primitive::Path(PathBuf::from(p.to_string())))
     }
+    
+token<T> = WS* T WS*
 
 path_char = !(WS/EOL) .
 

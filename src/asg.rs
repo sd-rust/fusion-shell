@@ -11,7 +11,7 @@ pub enum Primitive {
     Int(i64),
     Str(String),
     Path(PathBuf),
-    Exit(i32), // TODO: rename to Error?
+    //Exit(i32), // TODO: rename to Error?
 }
 
 impl fmt::Display for Primitive {
@@ -21,7 +21,7 @@ impl fmt::Display for Primitive {
             Primitive::Int(ref val) => write!(f, "{}", val),
             Primitive::Str(ref val) => write!(f, "{}", val),
             Primitive::Path(ref val) => write!(f, "{}", val.display()),
-            Primitive::Exit(ecode) => write!(f, "<exit {}>", ecode),
+            //Primitive::Exit(ecode) => write!(f, "<exit {}>", ecode),
         }
     }
 }
@@ -33,10 +33,16 @@ pub struct FunctionApplication {
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
+pub struct FunctionParam {
+    pub name: String,
+    pub param_type: String,
+}
+
+//TODO: Rename Expression to Statement
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
     Value(Primitive),
-    Function(FunctionApplication),
-    //Map(FunctionApplication, FunctionApplication),
+    FunctionDefinition { name: String , params: Vec<FunctionParam> },
 }
 
 impl From<Primitive> for Expression {

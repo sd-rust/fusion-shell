@@ -3,7 +3,7 @@
 use std::process;
 
 use utils;
-use interpreter::{self, Exit};
+//use interpreter::{self, Exit};
 
 use fsh_parser;
 
@@ -30,10 +30,12 @@ pub fn do_repl() {
 
                         // TODO: Return exit code from do_repl() and call
                         // process::exit() from main()
-                        if let Exit::Yes(ecode) = interpreter::run_prog(prog) {
-                            rl.save_history(history_file).unwrap();
-                            process::exit(ecode);
-                        }
+                        // if let Exit::Yes(ecode) = interpreter::run_prog(prog) {
+                        //     rl.save_history(history_file).unwrap();
+                        //     process::exit(ecode);
+                        // }
+                        
+                        println!("{:?}", prog);
                     }
                     Err(err) => println_err!("Error: {}", err),
                 }

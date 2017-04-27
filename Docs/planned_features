@@ -55,34 +55,38 @@
         let PI = 3.141592654
         let GREETING = hello
     
-- Data structures
-    - Lists: 
-        let a = [a b c]
-        a.len #There is no NULL in fusion-shell
-        subscripting: a[0]
-        slicing: a[1:]
-        - List comprehensions
-            [[[ poly x y
-            | i <- [0..], let x = m + 60*i, test x y ]
-            | j <- [0..], let y = n + 60*j ]
-            | m <- [1..60], n <- [1..60], mod (poly m n) 60 == k ]
-    - Dictionaries
-        - Dictionary comprehensions
-    - Tuples
-        - Indexable
-        - Comparable
-    - Enums (like in Rust)
-    - Option
-    - Result
+- Data types
+    - Aggregates
+        - Lists: 
+            let a = [a b c]
+            a.len #There is no NULL in fusion-shell
+            subscripting: a[0]
+            slicing: a[1:]
+            - List comprehensions
+                [[[ poly x y
+                | i <- [0..], let x = m + 60*i, test x y ]
+                | j <- [0..], let y = n + 60*j ]
+                | m <- [1..60], n <- [1..60], mod (poly m n) 60 == k ]
+        - Dictionaries
+            - Dictionary comprehensions
+        - Tuples
+            - Indexable
+            - Comparable
+        - Enums (like in Rust)
+        - Option
+        - Result
 
-- Strings
-    - Type name: str
-    - Intrapolation: 
-        - "Name: $name"
-        - "width: ${width}px"
-        - Quotation: "", '', """ """
-    - Accept escape chars (even in bare strings): \e, \r, \n, \t, \x, \U etc
-    - Conversion function: toStr
+    - Strings
+        - Type name: str
+        - Intrapolation: 
+            - "Name: $name"
+            - "width: ${width}px"
+            - Quotation: "", '', """ """
+        - Accept escape chars (even in bare strings): \e, \r, \n, \t, \x, \U etc
+        - Conversion function: toStr
+    - Chars
+        - Type name: char
+        - 'a', 'b', '\e' etc.
 
 - Functions
     - say_hello name = echo Hello $name
