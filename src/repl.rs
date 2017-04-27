@@ -1,9 +1,9 @@
 // Copyright (C) 2016  Sandeep Datta
 
-//use std::process;
+// use std::process;
 
 use utils;
-//use interpreter::{self, Exit};
+// use interpreter::{self, Exit};
 
 use fsh_parser;
 
@@ -34,7 +34,7 @@ pub fn do_repl() {
                         //     rl.save_history(history_file).unwrap();
                         //     process::exit(ecode);
                         // }
-                        
+
                         println!("{:#?}", prog);
                     }
                     Err(err) => println_err!("Error: {}", err),
