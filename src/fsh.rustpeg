@@ -17,7 +17,18 @@ pub program -> Vec<Expression>
     }
 
 expression -> Expression
-    = number / string / function_definition
+    = e:(number / string / function_definition) comment? {
+        e
+    }
+    
+comment -> ()
+    = WS* comment_start comment_char* (EOL/EOF)
+
+comment_start -> ()
+    = "#"
+
+comment_char -> ()
+    = !EOL .
 
 number -> Expression
     = integer
