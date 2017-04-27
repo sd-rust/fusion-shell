@@ -38,7 +38,7 @@ impl fmt::Display for StreamError {
     }
 }
 
-pub type Stream = Vec<Result<StreamElement, StreamError>>;
+pub type Stream = Vec<Result<Primitive, StreamError>>;
 
 impl From<io::Error> for StreamError {
     fn from(err: io::Error) -> StreamError {
@@ -46,15 +46,15 @@ impl From<io::Error> for StreamError {
     }
 }
 
-impl From<PathBuf> for StreamElement {
-    fn from(path_buff: PathBuf) -> StreamElement {
-        StreamElement::Path(path_buff)
+impl From<PathBuf> for Primitive {
+    fn from(path_buff: PathBuf) -> Primitive {
+        Primitive::Path(path_buff)
     }
 }
 
-impl From<()> for StreamElement {
-    fn from(_: ()) -> StreamElement {
-        StreamElement::None
+impl From<()> for Primitive {
+    fn from(_: ()) -> Primitive {
+        Primitive::None
     }
 }
 
@@ -86,7 +86,7 @@ pub fn cd(arg_streams: Vec<Stream>) -> Stream {
     let arg = &arg_stream[0];
 
     let result = match arg {
-        &Ok(StreamElement::Path(ref p)) => {
+        &Ok(Primitive::Path(ref p)) => {
             env::set_current_dir(p)
                 .map(From::from)
                 .map_err(From::from)
@@ -100,10 +100,10 @@ pub fn cd(arg_streams: Vec<Stream>) -> Stream {
 pub fn exit(arg_streams: Vec<Stream>) -> Stream {
     let result = match arg_streams[..] {
         [ref arg_stream] => match arg_stream[..] {
-            [Ok(StreamElement::Int(exit_code))] => Ok(StreamElement::Exit(exit_code as i32)),
+            [Ok(Primitive::Int(exit_code))] => Ok(Primitive::Exit(exit_code as i32)),
             _ => Err(StreamError::ArgType(0)),
         },
-        [] => Ok(StreamElement::Exit(0)),
+        [] => Ok(Primitive::Exit(0)),
         _ => Err(StreamError::CommandArity(0, 1, arg_streams.len())),
     };
 

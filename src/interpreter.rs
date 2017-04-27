@@ -1,7 +1,7 @@
 // Copyright (C) 2016  Sandeep Datta
 
 use commands::{self, StreamError, Stream};
-use asg::{Expression, CommandApplication, StreamElement};
+use asg::{Expression, FunctionApplication, Primitive};
 
 pub enum Exit {
     No,
@@ -15,7 +15,7 @@ fn print(stream: Stream) -> Exit {
         match maybe_val {
             Ok(val) => {
                 match val {
-                    StreamElement::Exit(ecode) => return Exit::Yes(ecode),
+                    Primitive::Exit(ecode) => return Exit::Yes(ecode),
                     _ => print!("{}", val),
                 }
             }
@@ -31,7 +31,7 @@ fn run_expr(expr: Expression) -> Stream {
 
     match expr {
         Expression::Value(pipe_val) => vec![Ok(pipe_val)],
-        Expression::Command(CommandApplication { name, args }) => {
+        Expression::Function(FunctionApplication { name, args }) => {
 
             // println!("args: {:?}", args);
 

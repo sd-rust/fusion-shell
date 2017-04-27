@@ -6,7 +6,7 @@ use std::fmt;
 use std::path::PathBuf;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub enum StreamElement {
+pub enum Primitive {
     None,
     Int(i64),
     Str(String),
@@ -14,33 +14,33 @@ pub enum StreamElement {
     Exit(i32), // TODO: rename to Error?
 }
 
-impl fmt::Display for StreamElement {
+impl fmt::Display for Primitive {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            StreamElement::None => write!(f, ""),
-            StreamElement::Int(ref val) => write!(f, "{}", val),
-            StreamElement::Str(ref val) => write!(f, "{}", val),
-            StreamElement::Path(ref val) => write!(f, "{}", val.display()),
-            StreamElement::Exit(ecode) => write!(f, "<exit {}>", ecode),
+            Primitive::None => write!(f, ""),
+            Primitive::Int(ref val) => write!(f, "{}", val),
+            Primitive::Str(ref val) => write!(f, "{}", val),
+            Primitive::Path(ref val) => write!(f, "{}", val.display()),
+            Primitive::Exit(ecode) => write!(f, "<exit {}>", ecode),
         }
     }
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub struct CommandApplication {
+pub struct FunctionApplication {
     pub name: String,
     pub args: Vec<Expression>,
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
-    Value(StreamElement),
-    Command(CommandApplication),
-    //Map(CommandApplication, CommandApplication),
+    Value(Primitive),
+    Function(FunctionApplication),
+    //Map(FunctionApplication, FunctionApplication),
 }
 
-impl From<StreamElement> for Expression {
-    fn from(pv: StreamElement) -> Expression {
+impl From<Primitive> for Expression {
+    fn from(pv: Primitive) -> Expression {
         Expression::Value(pv)
     }
 }

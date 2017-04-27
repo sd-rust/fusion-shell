@@ -1,6 +1,6 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use asg::{Expression, CommandApplication, StreamElement};
+use asg::{Expression, FunctionApplication, Primitive};
 use std::path::PathBuf;
 
 #[pub]
@@ -15,14 +15,14 @@ program -> Vec<Expression>
     }
 
 expression -> Expression
-    = number / string / command
+    = number / string / function
 
 number -> Expression
     = integer
 
 integer -> Expression
     = WS* d:digits WS* { 
-        From::from(StreamElement::Int(d.parse().unwrap()))
+        From::from(Primitive::Int(d.parse().unwrap()))
     }
 
 digits -> &'input str
@@ -30,21 +30,21 @@ digits -> &'input str
 
 string -> Expression
     = WS* "\"" xs:str_chars "\"" WS*  { 
-        From::from(StreamElement::Str(xs.to_string()))
+        From::from(Primitive::Str(xs.to_string()))
     }
 
 str_chars -> &'input str
     = $((!"\"" .)*)
 
-command -> Expression
-    = id:identifier maybe_args:command_args? {
+function -> Expression
+    = id:identifier maybe_args:function_args? {
         match maybe_args {
-            Some(args) => Expression::Command(CommandApplication {name: id.to_string(), args: args}),
-            None => Expression::Command(CommandApplication {name: id.to_string(), args: vec![]})
+            Some(args) => Expression::Function(FunctionApplication {name: id.to_string(), args: args}),
+            None => Expression::Function(FunctionApplication {name: id.to_string(), args: vec![]})
         }
     }
 
-command_args -> Vec<Expression>
+function_args -> Vec<Expression>
     = WS+ e:(integer / string / path)* { 
         e 
     }
@@ -54,7 +54,7 @@ identifier -> &'input str
 
 path -> Expression
     = p: $(path_char+) {
-        From::from(StreamElement::Path(PathBuf::from(p.to_string())))
+        From::from(Primitive::Path(PathBuf::from(p.to_string())))
     }
 
 path_char = !(WS/EOL) .
