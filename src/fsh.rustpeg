@@ -1,20 +1,19 @@
 // Copyright (C) 2016  Sandeep Datta
 
 use asg::*;
-use asg::Expression::*;
 use std::path::PathBuf;
 
 // TODO: remove hardcoded EOL and add support for multiline
 // function definitions
 
 pub program -> Vec<Expression>
-    = e1:((e0:expression EOL {e0}) / comment)* e2:expression? EOF {
-        let mut exprs = vec![];
-        exprs.extend(e1);
-        if let Some(e) = e2 {
-            exprs.push(e);
-        }
-        exprs
+    = e:(complete_expr / comment)* {
+        e.into_iter().filter(|x| x != &Expression::Void).collect()
+    }
+
+complete_expr -> Expression
+    = e:expression EOL_OR_EOF {
+        e
     }
 
 expression -> Expression
@@ -23,14 +22,14 @@ expression -> Expression
     }
     
 comment -> Expression
-    = WS* comment_start comment_char* (EOL/EOF) {
-        Void
+    = WS* comment_start comment_char* EOL_OR_EOF {
+        Expression::Void
     }
 
-comment_start -> ()
+comment_start
     = "#"
 
-comment_char -> ()
+comment_char
     = !EOL .
 
 number -> Expression
@@ -89,3 +88,4 @@ path_char = !(WS/EOL) .
 WS = [ \t]
 EOL = [\n]
 EOF = !.
+EOL_OR_EOF = EOL / EOF
