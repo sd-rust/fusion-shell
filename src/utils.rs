@@ -1,8 +1,8 @@
-// Copyright (C) 2016  Sandeep Datta
+// Copyright (C) 2016+ Sandeep Datta
 
 use std::env;
 
-// Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion
+// Font: Big. http://patorjk.com/software/taag/#p=display&f=Big&t=Fusion%20Shell
 static BANNER: &'static str = r#"
  ______         _                _____ _          _ _ 
 |  ____|       (_)              / ____| |        | | |

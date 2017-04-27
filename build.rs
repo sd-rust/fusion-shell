@@ -1,3 +1,5 @@
+// Copyright (C) 2017+ Sandeep Datta
+
 extern crate peg;
 
 fn main() {

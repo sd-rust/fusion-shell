@@ -1,3 +1,5 @@
+// Copyright (C) 2017+ Sandeep Datta
+
 - Use Display trait to show final output.
 - All commands should return Vec<Result<StreamElement, StreamError>>
 - Print error messages to stderr
