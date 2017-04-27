@@ -40,6 +40,7 @@ pub struct FunctionParam {
 // TODO: Rename Expression to Statement
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Expression {
+    Void,
     Value(Primitive),
     FunctionDefinition {
         name: String,

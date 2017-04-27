@@ -1,13 +1,14 @@
 // Copyright (C) 2016  Sandeep Datta
 
-use asg::{Expression, FunctionParam, Primitive};
+use asg::*;
+use asg::Expression::*;
 use std::path::PathBuf;
 
 // TODO: remove hardcoded EOL and add support for multiline
 // function definitions
 
 pub program -> Vec<Expression>
-    = e1:(e0:expression EOL {e0})* e2:expression? EOF {
+    = e1:((e0:expression EOL {e0}) / comment)* e2:expression? EOF {
         let mut exprs = vec![];
         exprs.extend(e1);
         if let Some(e) = e2 {
@@ -21,8 +22,10 @@ expression -> Expression
         e
     }
     
-comment -> ()
-    = WS* comment_start comment_char* (EOL/EOF)
+comment -> Expression
+    = WS* comment_start comment_char* (EOL/EOF) {
+        Void
+    }
 
 comment_start -> ()
     = "#"
