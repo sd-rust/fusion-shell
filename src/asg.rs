@@ -26,9 +26,12 @@ impl fmt::Display for Primitive {
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub struct FunctionApplication {
+pub struct FunctionArg {
     pub name: String,
-    pub args: Vec<Expression>,
+    // Note: some Expression types (like FunctionDefinition) are
+    // illegal here but have not been encoded in the type system
+    // to keep things simple for now.
+    pub value: Expression, 
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -46,6 +49,10 @@ pub enum Expression {
         name: String,
         params: Vec<FunctionParam>,
         body: Vec<Expression>,
+    },
+    FunctionApplication {
+        name: String,
+        args: Vec<FunctionArg>,
     },
 }
 
