@@ -33,13 +33,14 @@
 - Variables
     - Setting value: 
         - Immutable: 
-            - Local to current shell: x = 10;
-            - Exported (to other shell processes): pub x = 10; 
-              Non string values can be passed without serialization.
-            - Exported to other non shell processes: export x; Values must be 
-              serialized as strings. Will use the platform environment variable 
-              mechanism.
-        - Mutable: var y = "abc";
+            - Local to current shell: x = 10
+            - Exported (to other shell processes): pub x = 10
+              Non string values can be passed without conversion into string 
+              based representations.
+            - Exported to other non shell processes: export x 
+              Values must be serialized as strings. Will use the platform 
+              environment variable mechanism.
+        - Mutable: var y = "abc"
         - export keyword for exporting predefined variables
     - Getting value: echo $x $y
     - Not supported: Deleting: del x, y;
@@ -54,16 +55,15 @@
         - INIT_DIR - directory from where the shell was started
         - SCRIPT_PATH, SCRIPT_DIR, SCRIPT_NAME
     - Constants
-        let PI = 3.141592654
-        let GREETING = hello
+        - No separate constants. All variables are immutable by default.
     
 - Data types
     - Aggregates
         - Lists: 
             let a = [a b c]
-            a.len #There is no NULL in fusion-shell
-            subscripting: a[0]
-            slicing: a[1:]
+            - a.len #There is no NULL in fusion-shell
+            - subscripting: a[0] # Returns an Option<T> value?
+            - slicing: a[1:]
             - List comprehensions
                 [[[ poly x y
                 | i <- [0..], let x = m + 60*i, test x y ]
@@ -83,7 +83,7 @@
         - Intrapolation: 
             - "Name: $name"
             - "width: ${width}px"
-            - Quotation: "", '', """ """
+            - Quotation: "", """ """
         - Accept escape chars (even in bare strings): \e, \r, \n, \t, \x, \U etc
         - Conversion function: toStr
     - Chars
