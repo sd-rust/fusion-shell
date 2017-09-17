@@ -26,9 +26,8 @@ fn main() {
             repl::do_repl();
         }
         _ => {
-            println_err!("Running:{}", args[1]);
+            eprintln!("Running:{}", args[1]);
             script_checker::parse_script(&args[1]);
         }
     }
-
 }

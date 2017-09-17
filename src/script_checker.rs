@@ -11,6 +11,6 @@ pub fn parse_script(path: &str) {
         Ok(prog) => {
             println!("{:#?}", prog);
         }
-        Err(err) => println_err!("Error: {}", err),
+        Err(err) => eprintln!("Error: {}", err),
     }
 }

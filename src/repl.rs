@@ -14,7 +14,7 @@ pub fn do_repl() {
     let mut rl = Editor::<()>::new();
     let history_file = "fsh_history";
     if let Err(_) = rl.load_history(history_file) {
-        println_err!("No previous history.");
+        eprintln!("No previous history.");
     }
 
     loop {
@@ -37,19 +37,19 @@ pub fn do_repl() {
 
                         println!("{:#?}", prog);
                     }
-                    Err(err) => println_err!("Error: {}", err),
+                    Err(err) => eprintln!("Error: {}", err),
                 }
             }
             Err(ReadlineError::Interrupted) => {
-                println_err!("Ctrl-C");
+                eprintln!("Ctrl-C");
                 break;
             }
             Err(ReadlineError::Eof) => {
-                println_err!("Ctrl-D");
+                eprintln!("Ctrl-D");
                 break;
             }
             Err(err) => {
-                println_err!("Error: {}", err);
+                eprintln!("Error: {}", err);
                 break;
             }
         }
