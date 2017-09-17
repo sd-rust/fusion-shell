@@ -25,7 +25,7 @@ pub fn do_repl() {
 
                 match maybe_prog {
                     Ok(prog) => {
-                        // Only add syntatically valid entries
+                        // Only add syntactically valid entries
                         rl.add_history_entry(&line);
 
                         // TODO: Return exit code from do_repl() and call

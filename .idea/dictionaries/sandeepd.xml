@@ -2,6 +2,7 @@
   <dictionary name="sandeepd">
     <words>
       <w>datta</w>
+      <w>prog</w>
       <w>repl</w>
       <w>rustpeg</w>
       <w>rustyline</w>
